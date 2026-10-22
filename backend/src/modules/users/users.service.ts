@@ -134,7 +134,7 @@ export class UsersService implements OnModuleInit {
   }
 
   /**
-   * Khởi tạo dữ liệu mẫu cho hệ thống (Roles & Users thử nghiệm các kịch bản Sequence Diagram)
+   * Khởi tạo dữ liệu mẫu cho hệ thống (mật khẩu tạm thời đổi thành 123456 cho tất cả tài khoản)
    */
   async seedInitialData(): Promise<void> {
     try {
@@ -159,7 +159,9 @@ export class UsersService implements OnModuleInit {
         });
       }
 
-      // 2. Seed tài khoản Quản trị viên (ADMIN) - kịch bản Đăng nhập thành công
+      const defaultHash = await bcrypt.hash('123456', 10);
+
+      // 2. Seed tài khoản Quản trị viên (ADMIN) - mật khẩu: 123456
       const adminAcc = await this.userAccountRepository.findOne({
         where: { username: 'admin' },
       });
@@ -171,18 +173,20 @@ export class UsersService implements OnModuleInit {
           status: 'ACTIVE',
         });
 
-        const hash = await bcrypt.hash('Admin@123', 10);
         await this.userAccountRepository.save({
           username: 'admin',
-          passwordHash: hash,
+          passwordHash: defaultHash,
           employeeId: empAdmin.employeeId,
           roleId: adminRole.roleId,
           status: 'ACTIVE',
         });
-        this.logger.log('Đã tạo tài khoản mẫu ADMIN: admin / Admin@123');
+        this.logger.log('Đã tạo tài khoản mẫu ADMIN: admin / 123456');
+      } else {
+        adminAcc.passwordHash = defaultHash;
+        await this.userAccountRepository.save(adminAcc);
       }
 
-      // 3. Seed tài khoản Thủ kho (USER) - kịch bản Đăng nhập thành công
+      // 3. Seed tài khoản Thủ kho (USER) - mật khẩu: 123456
       const staffAcc = await this.userAccountRepository.findOne({
         where: { username: 'thukho' },
       });
@@ -194,18 +198,20 @@ export class UsersService implements OnModuleInit {
           status: 'ACTIVE',
         });
 
-        const hash = await bcrypt.hash('Staff@123', 10);
         await this.userAccountRepository.save({
           username: 'thukho',
-          passwordHash: hash,
+          passwordHash: defaultHash,
           employeeId: empStaff.employeeId,
           roleId: userRole.roleId,
           status: 'ACTIVE',
         });
-        this.logger.log('Đã tạo tài khoản mẫu USER: thukho / Staff@123');
+        this.logger.log('Đã tạo tài khoản mẫu USER: thukho / 123456');
+      } else {
+        staffAcc.passwordHash = defaultHash;
+        await this.userAccountRepository.save(staffAcc);
       }
 
-      // 4. Seed tài khoản bị Khóa (LOCKED) - thử kịch bản "Từ chối đăng nhập"
+      // 4. Seed tài khoản bị Khóa (LOCKED) - mật khẩu: 123456 (Thử kịch bản "Từ chối đăng nhập")
       const lockedAcc = await this.userAccountRepository.findOne({
         where: { username: 'khoa_taikhoan' },
       });
@@ -217,18 +223,20 @@ export class UsersService implements OnModuleInit {
           status: 'INACTIVE',
         });
 
-        const hash = await bcrypt.hash('123456', 10);
         await this.userAccountRepository.save({
           username: 'khoa_taikhoan',
-          passwordHash: hash,
+          passwordHash: defaultHash,
           employeeId: empLocked.employeeId,
           roleId: userRole.roleId,
           status: 'LOCKED',
         });
         this.logger.log('Đã tạo tài khoản mẫu BỊ KHÓA: khoa_taikhoan / 123456');
+      } else {
+        lockedAcc.passwordHash = defaultHash;
+        await this.userAccountRepository.save(lockedAcc);
       }
 
-      // 5. Seed tài khoản chưa có vai trò (Role null) - thử kịch bản "Từ chối đăng nhập"
+      // 5. Seed tài khoản chưa có vai trò (Role null) - mật khẩu: 123456 (Thử kịch bản "Từ chối đăng nhập")
       const noRoleAcc = await this.userAccountRepository.findOne({
         where: { username: 'chua_phan_quyen' },
       });
@@ -240,10 +248,9 @@ export class UsersService implements OnModuleInit {
           status: 'ACTIVE',
         });
 
-        const hash = await bcrypt.hash('123456', 10);
         await this.userAccountRepository.save({
           username: 'chua_phan_quyen',
-          passwordHash: hash,
+          passwordHash: defaultHash,
           employeeId: empNoRole.employeeId,
           roleId: undefined,
           status: 'ACTIVE',
@@ -251,6 +258,9 @@ export class UsersService implements OnModuleInit {
         this.logger.log(
           'Đã tạo tài khoản mẫu CHƯA PHÂN QUYỀN: chua_phan_quyen / 123456',
         );
+      } else {
+        noRoleAcc.passwordHash = defaultHash;
+        await this.userAccountRepository.save(noRoleAcc);
       }
     } catch (err) {
       this.logger.warn('Seed data initial check: ' + (err as Error).message);

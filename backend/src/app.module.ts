@@ -29,8 +29,7 @@ import { HttpExceptionFilter } from './common/filters/http-exception.filter';
         password: configService.get<string>('DB_PASSWORD', 'postgres'),
         database: configService.get<string>('DB_DATABASE', 'quanlykho'),
         entities: ENTITIES,
-        synchronize:
-          configService.get<string>('DB_SYNCHRONIZE', 'true') === 'true',
+        synchronize: true,
         logging: configService.get<string>('DB_LOGGING', 'false') === 'true',
       }),
     }),

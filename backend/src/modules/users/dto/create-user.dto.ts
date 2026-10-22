@@ -11,16 +11,16 @@ export class CreateUserDto {
   @IsNotEmpty({ message: 'Tên đăng nhập không được để trống' })
   @IsString({ message: 'Tên đăng nhập phải là chuỗi ký tự' })
   @MinLength(3, { message: 'Tên đăng nhập phải có ít nhất 3 ký tự' })
-  username: string;
+  username!: string;
 
   @IsNotEmpty({ message: 'Mật khẩu không được để trống' })
   @IsString({ message: 'Mật khẩu phải là chuỗi ký tự' })
   @MinLength(6, { message: 'Mật khẩu phải có ít nhất 6 ký tự' })
-  password: string;
+  password!: string;
 
   @IsNotEmpty({ message: 'Họ tên nhân viên không được để trống' })
   @IsString({ message: 'Họ tên phải là chuỗi ký tự' })
-  fullName: string;
+  fullName!: string;
 
   @IsOptional()
   @IsEmail({}, { message: 'Email không hợp lệ' })

@@ -306,12 +306,12 @@ export default function LoginPage() {
               type="button"
               onClick={() => {
                 setUsername('admin');
-                setPassword('Admin@123');
-                void handleLogin(undefined, 'admin', 'Admin@123');
+                setPassword('123456');
+                void handleLogin(undefined, 'admin', '123456');
               }}
               className="p-2 rounded bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 font-medium transition text-left"
             >
-              1. Admin hợp lệ
+              1. Admin (123456)
               <span className="block text-[10px] text-emerald-600">Đăng nhập thành công</span>
             </button>
 
@@ -319,12 +319,12 @@ export default function LoginPage() {
               type="button"
               onClick={() => {
                 setUsername('thukho');
-                setPassword('Staff@123');
-                void handleLogin(undefined, 'thukho', 'Staff@123');
+                setPassword('123456');
+                void handleLogin(undefined, 'thukho', '123456');
               }}
               className="p-2 rounded bg-blue-50 hover:bg-blue-100 text-blue-800 border border-blue-200 font-medium transition text-left"
             >
-              2. Thủ kho hợp lệ
+              2. Thủ kho (123456)
               <span className="block text-[10px] text-blue-600">Đăng nhập thành công</span>
             </button>
 
@@ -332,8 +332,8 @@ export default function LoginPage() {
               type="button"
               onClick={() => {
                 setUsername('thukho');
-                setPassword('sai_password_123');
-                void handleLogin(undefined, 'thukho', 'sai_password_123');
+                setPassword('sai_password');
+                void handleLogin(undefined, 'thukho', 'sai_password');
               }}
               className="p-2 rounded bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 font-medium transition text-left"
             >

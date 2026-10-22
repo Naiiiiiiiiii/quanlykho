@@ -34,8 +34,8 @@ Các tài khoản này được khởi tạo tự động khi khởi động bac
 
 | Username | Password | Vai trò (Role) | Trạng thái | Kịch bản Sequence Diagram kiểm thử | Kết quả mong đợi |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| `admin` | `Admin@123` | **ADMIN** | `ACTIVE` | **Nhánh 4:** Thông tin xác thực hợp lệ (Quản trị viên) | Cấp JWT Token, mở giao diện chức năng |
-| `thukho` | `Staff@123` | **USER** | `ACTIVE` | **Nhánh 4:** Thông tin xác thực hợp lệ (Thủ kho) | Cấp JWT Token, mở giao diện chức năng |
+| `admin` | `123456` | **ADMIN** | `ACTIVE` | **Nhánh 4:** Thông tin xác thực hợp lệ (Quản trị viên) | Cấp JWT Token, mở giao diện chức năng |
+| `thukho` | `123456` | **USER** | `ACTIVE` | **Nhánh 4:** Thông tin xác thực hợp lệ (Thủ kho) | Cấp JWT Token, mở giao diện chức năng |
 | `khoa_taikhoan` | `123456` | **USER** | `LOCKED` | **Nhánh 3:** Tài khoản không được phép truy cập (Bị khóa) | Báo lỗi: `"Từ chối đăng nhập"` |
 | `chua_phan_quyen` | `123456` | *(Không có)* | `ACTIVE` | **Nhánh 3:** Tài khoản chưa cấp quyền hạn | Báo lỗi: `"Từ chối đăng nhập"` |
 | `thukho` | `sai_password` | — | — | **Nhánh 2:** Thông tin đăng nhập sai mật khẩu | Báo lỗi: `"Không xác thực được"` |
