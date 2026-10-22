@@ -1,18 +1,18 @@
 # Dependencies
 node_modules/
-/.pnp
+.pnp
 .pnp.js
 
 # Testing
-/coverage
+coverage/
 
 # Next.js
-/.next/
-/out/
+.next/
+out/
 
 # NestJS / TypeScript build output
-/dist
-/build
+dist/
+build/
 
 # Environment variables
 .env
