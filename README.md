@@ -20,11 +20,28 @@ Hệ thống Quản lý kho (**quanlykho**) hỗ trợ doanh nghiệp tự độ
 
 ## 🛠️ Công nghệ sử dụng
 
-- **Backend:** [NestJS](https://nestjs.com/) (Node.js framework với kiến trúc mô-đun hóa, TypeScript, OOP chuẩn mực)
+- **Backend:** [NestJS](https://nestjs.com/) (TypeScript, TypeORM, PostgreSQL, Passport JWT)
   - Port mặc định: `5000` (đã bật CORS)
 - **Frontend:** [Next.js](https://nextjs.org/) (React 19, Next.js App Router, Tailwind CSS, Turbopack)
   - Port mặc định: `3000`
-- **Database dự kiến:** PostgreSQL / MySQL (kết hợp Prisma ORM hoặc TypeORM)
+- **Database:** PostgreSQL
+
+---
+
+## 🔑 Tài khoản mẫu thử nghiệm (Seed Accounts)
+
+Các tài khoản này được khởi tạo tự động khi khởi động backend tại [`src/modules/users/users.service.ts`](backend/src/modules/users/users.service.ts) để kiểm thử đầy đủ 4 nhánh của **Sequence Diagram Đăng nhập**:
+
+| Username | Password | Vai trò (Role) | Trạng thái | Kịch bản Sequence Diagram kiểm thử | Kết quả mong đợi |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| `admin` | `Admin@123` | **ADMIN** | `ACTIVE` | **Nhánh 4:** Thông tin xác thực hợp lệ (Quản trị viên) | Cấp JWT Token, mở giao diện chức năng |
+| `thukho` | `Staff@123` | **USER** | `ACTIVE` | **Nhánh 4:** Thông tin xác thực hợp lệ (Thủ kho) | Cấp JWT Token, mở giao diện chức năng |
+| `khoa_taikhoan` | `123456` | **USER** | `LOCKED` | **Nhánh 3:** Tài khoản không được phép truy cập (Bị khóa) | Báo lỗi: `"Từ chối đăng nhập"` |
+| `chua_phan_quyen` | `123456` | *(Không có)* | `ACTIVE` | **Nhánh 3:** Tài khoản chưa cấp quyền hạn | Báo lỗi: `"Từ chối đăng nhập"` |
+| `thukho` | `sai_password` | — | — | **Nhánh 2:** Thông tin đăng nhập sai mật khẩu | Báo lỗi: `"Không xác thực được"` |
+| *(Tên bất kỳ)* | `123456` | — | — | **Nhánh 2:** Tài khoản không tồn tại | Báo lỗi: `"Không xác thực được"` |
+
+> 💡 **Mẹo:** Trên giao diện frontend (`http://localhost:3000`), có sẵn **4 nút bấm thử nghiệm nhanh** để tự động điền và kiểm tra ngay từng trường hợp!
 
 ---
 
@@ -34,16 +51,18 @@ Hệ thống Quản lý kho (**quanlykho**) hỗ trợ doanh nghiệp tự độ
 OOAD_project/
 ├── backend/                  # NestJS API & Business Logic
 │   ├── src/
-│   │   ├── app.controller.ts
-│   │   ├── app.module.ts
-│   │   ├── app.service.ts
-│   │   └── main.ts           # Chạy tại port 5000 (app.enableCors())
+│   │   ├── common/           # Middleware, Guards, Interceptors, Filters, Decorators
+│   │   ├── entities/         # 24 Entities TypeORM chuẩn CSDL Quản lý kho
+│   │   ├── modules/
+│   │   │   ├── auth/         # Module Xác thực (Login, JWT)
+│   │   │   └── users/        # Module Tài khoản & Nhân sự (Seed data)
+│   │   └── main.ts           # Chạy tại port 5000 (CORS & ValidationPipe)
 │   ├── package.json
 │   └── tsconfig.json
 │
 ├── frontend/                 # Next.js Web Application
 │   ├── src/
-│   │   └── app/              # Next.js App Router pages & layout
+│   │   └── app/              # Giao diện Đăng nhập & Dashboard chức năng
 │   ├── public/
 │   ├── package.json
 │   └── next.config.ts
