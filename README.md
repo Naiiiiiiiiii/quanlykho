@@ -21,39 +21,53 @@ Hệ thống Quản lý kho (**quanlykho**) hỗ trợ doanh nghiệp tự độ
 ## 🛠️ Công nghệ sử dụng
 
 - **Backend:** [NestJS](https://nestjs.com/) (Node.js framework với kiến trúc mô-đun hóa, TypeScript, OOP chuẩn mực)
-- **Frontend:** [Next.js](https://nextjs.org/) (React Framework, App Router, SSR/SSG, Tailwind CSS)
-- **Database:** PostgreSQL / MySQL (kết hợp Prisma ORM hoặc TypeORM)
-- **Kiến trúc thiết kế:**
-  - Object-Oriented Analysis and Design (OOAD)
-  - Mô hình Layered Architecture / Clean Architecture (Controller - Service - Repository)
-  - Thiết kế theo các Design Patterns (Factory, Strategy, Observer, Repository...)
+  - Port mặc định: `5000` (đã bật CORS)
+- **Frontend:** [Next.js](https://nextjs.org/) (React 19, Next.js App Router, Tailwind CSS, Turbopack)
+  - Port mặc định: `3000`
+- **Database dự kiến:** PostgreSQL / MySQL (kết hợp Prisma ORM hoặc TypeORM)
 
 ---
 
-## 📁 Cấu trúc dự án dự kiến
+## 📁 Cấu trúc dự án
 
 ```text
-quanlykho/
-├── backend/          # Ứng dụng NestJS (API & Business Logic)
+OOAD_project/
+├── backend/                  # NestJS API & Business Logic
 │   ├── src/
-│   │   ├── modules/  # Auth, Products, Inventory, Inbound, Outbound, Users...
-│   │   └── main.ts
-├── frontend/         # Ứng dụng Next.js (Giao diện người dùng)
-│   ├── app/          # App router pages & layouts
-│   └── components/   # UI components
-├── docs/             # Tài liệu phân tích thiết kế OOAD (Use Case, Sequence, Class Diagram)
+│   │   ├── app.controller.ts
+│   │   ├── app.module.ts
+│   │   ├── app.service.ts
+│   │   └── main.ts           # Chạy tại port 5000 (app.enableCors())
+│   ├── package.json
+│   └── tsconfig.json
+│
+├── frontend/                 # Next.js Web Application
+│   ├── src/
+│   │   └── app/              # Next.js App Router pages & layout
+│   ├── public/
+│   ├── package.json
+│   └── next.config.ts
+│
 ├── .gitignore
 └── README.md
 ```
 
 ---
 
-## 🚀 Bắt đầu phát triển
+## 🚀 Hướng dẫn khởi chạy
 
-### Yêu cầu môi trường:
-- Node.js (>= 18.x)
-- Package manager: `npm` hoặc `pnpm` / `yarn`
-- Git
+### 1. Khởi chạy Backend (NestJS)
+```bash
+cd backend
+npm install
+npm run start:dev
+```
+Backend sẽ chạy tại: `http://localhost:5000`
 
-### Khởi tạo các thành phần:
-*(Chi tiết các bước cài đặt cụ thể sẽ được cập nhật khi triển khai mã nguồn backend và frontend)*
+### 2. Khởi chạy Frontend (Next.js)
+```bash
+cd frontend
+npm install
+npm run dev
+```
+Frontend sẽ chạy tại: `http://localhost:3000`
