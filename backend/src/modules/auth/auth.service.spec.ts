@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-argument */
 jest.mock('@nestjs/typeorm', () => ({
   InjectRepository: () => () => {},
 }));
@@ -9,7 +10,6 @@ import {
 } from '@nestjs/common';
 import * as bcrypt from 'bcryptjs';
 import { AuthService } from './auth.service';
-import { UsersService } from '../users/users.service';
 import { UserAccount } from '../../entities/user-account.entity';
 import { Role } from '../../entities/role.entity';
 
@@ -28,10 +28,7 @@ describe('AuthService - Chức năng Đăng nhập theo Sequence Diagram', () =>
       sign: jest.fn().mockReturnValue('mocked.jwt.token'),
     };
 
-    authService = new AuthService(
-      mockUsersService as unknown as UsersService,
-      mockJwtService,
-    );
+    authService = new AuthService(mockUsersService, mockJwtService);
   });
 
   // Nhánh 2: Thông tin đăng nhập sai (không tồn tại user hoặc sai pass)
