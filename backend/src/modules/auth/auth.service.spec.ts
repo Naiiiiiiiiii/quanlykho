@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-return */
 jest.mock('@nestjs/typeorm', () => ({
   InjectRepository: () => () => {},
 }));
@@ -13,10 +13,11 @@ import { AuthService } from './auth.service';
 import { UserAccount } from '../../entities/user-account.entity';
 import { Role } from '../../entities/role.entity';
 
-describe('AuthService - Chức năng Đăng nhập theo Sequence Diagram', () => {
+describe('AuthService - Chức năng Đăng nhập (UC13) & Đăng xuất (UC14) theo Sequence Diagram', () => {
   let authService: AuthService;
   let mockUsersService: any;
   let mockJwtService: any;
+  let mockUserSessionRepo: any;
 
   beforeEach(() => {
     mockUsersService = {
@@ -28,7 +29,18 @@ describe('AuthService - Chức năng Đăng nhập theo Sequence Diagram', () =>
       sign: jest.fn().mockReturnValue('mocked.jwt.token'),
     };
 
-    authService = new AuthService(mockUsersService, mockJwtService);
+    mockUserSessionRepo = {
+      create: jest.fn((dto) => dto),
+      save: jest.fn().mockResolvedValue({ sessionId: 1 }),
+      update: jest.fn().mockResolvedValue({ affected: 1 }),
+      findOne: jest.fn().mockResolvedValue(null),
+    };
+
+    authService = new AuthService(
+      mockUsersService,
+      mockJwtService,
+      mockUserSessionRepo,
+    );
   });
 
   // Nhánh 2: Thông tin đăng nhập sai (không tồn tại user hoặc sai pass)
@@ -148,6 +160,27 @@ describe('AuthService - Chức năng Đăng nhập theo Sequence Diagram', () =>
         authService.login({ username: 'any', password: 'any' }),
       ).rejects.toThrow(
         new InternalServerErrorException('Không thể hoàn tất thao tác'),
+      );
+    });
+  });
+
+  // UC14: Đăng xuất (Kết thúc phiên)
+  describe('UC14: Đăng xuất (invalidateSession)', () => {
+    it('Nên vô hiệu hóa phiên thành công khi người dùng đăng xuất', async () => {
+      const res = await authService.logout(10, 'mocked.jwt.token');
+      expect(res).toEqual({ revoked: true });
+      expect(mockUserSessionRepo.update).toHaveBeenCalled();
+    });
+
+    it('Nên ném InternalServerErrorException("Không thể kết thúc phiên làm việc, vui lòng thử lại") khi lỗi CSDL lúc đăng xuất', async () => {
+      mockUserSessionRepo.update.mockRejectedValue(
+        new Error('DB connection lost'),
+      );
+
+      await expect(authService.logout(10, 'mocked.jwt.token')).rejects.toThrow(
+        new InternalServerErrorException(
+          'Không thể kết thúc phiên làm việc, vui lòng thử lại',
+        ),
       );
     });
   });

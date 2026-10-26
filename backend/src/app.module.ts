@@ -7,8 +7,18 @@ import { AppService } from './app.service';
 import { ENTITIES } from './entities';
 import { UsersModule } from './modules/users/users.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { WarehousesModule } from './modules/warehouses/warehouses.module';
+import { ProductsModule } from './modules/products/products.module';
+import { ReceiptsModule } from './modules/receipts/receipts.module';
+import { ReportsModule } from './modules/reports/reports.module';
+import { IncidentsModule } from './modules/incidents/incidents.module';
+import { ContractsModule } from './modules/contracts/contracts.module';
+import { ChatModule } from './modules/chat/chat.module';
+import { HrModule } from './modules/hr/hr.module';
+import { SystemModule } from './modules/system/system.module';
 import { RequestIdMiddleware } from './common/middleware/request-id.middleware';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
+import { RolesGuard } from './common/guards/roles.guard';
 import { TransformLoggingInterceptor } from './common/interceptors/transform-logging.interceptor';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 
@@ -35,6 +45,15 @@ import { HttpExceptionFilter } from './common/filters/http-exception.filter';
     }),
     UsersModule,
     AuthModule,
+    WarehousesModule,
+    ProductsModule,
+    ReceiptsModule,
+    ReportsModule,
+    IncidentsModule,
+    ContractsModule,
+    ChatModule,
+    HrModule,
+    SystemModule,
   ],
   controllers: [AppController],
   providers: [
@@ -43,6 +62,11 @@ import { HttpExceptionFilter } from './common/filters/http-exception.filter';
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
+    },
+    // 1b. Guard (RBAC) - Kiểm tra vai trò theo metadata @Roles() và @ForbiddenMessage()
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
     },
     // 2. Interceptor (Tiền xử lý đo thời gian bắt đầu -> Hậu xử lý tính duration và chuẩn hóa format)
     {

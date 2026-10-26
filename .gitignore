@@ -42,3 +42,12 @@ Thumbs.db
 # Turborepo & cache
 .turbo
 *.tsbuildinfo
+
+# Agent / Antigravity skills & customizations
+.agent/
+.agents/
+.hallmark/
+
+# System backups
+backups/
+backend/backups/

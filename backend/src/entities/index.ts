@@ -22,6 +22,16 @@ import { QualityStatus } from './quality-status.entity';
 import { QualityCheck } from './quality-check.entity';
 import { Delivery } from './delivery.entity';
 import { DeliveryDetail } from './delivery-detail.entity';
+import { UserSession } from './user-session.entity';
+import { FacilityIncident } from './facility-incident.entity';
+import { RentalContract } from './rental-contract.entity';
+import { Conversation } from './conversation.entity';
+import { ConversationParticipant } from './conversation-participant.entity';
+import { Message } from './message.entity';
+import { BackupLog } from './backup-log.entity';
+import { SalaryRecord } from './salary-record.entity';
+import { WorkTask } from './work-task.entity';
+import { SystemErrorLog } from './system-error-log.entity';
 
 export * from './warehouse.entity';
 export * from './warehouse-zone.entity';
@@ -47,6 +57,16 @@ export * from './quality-status.entity';
 export * from './quality-check.entity';
 export * from './delivery.entity';
 export * from './delivery-detail.entity';
+export * from './user-session.entity';
+export * from './facility-incident.entity';
+export * from './rental-contract.entity';
+export * from './conversation.entity';
+export * from './conversation-participant.entity';
+export * from './message.entity';
+export * from './backup-log.entity';
+export * from './salary-record.entity';
+export * from './work-task.entity';
+export * from './system-error-log.entity';
 
 export const ENTITIES = [
   Warehouse,
@@ -73,4 +93,14 @@ export const ENTITIES = [
   QualityCheck,
   Delivery,
   DeliveryDetail,
+  UserSession,
+  FacilityIncident,
+  RentalContract,
+  Conversation,
+  ConversationParticipant,
+  Message,
+  BackupLog,
+  SalaryRecord,
+  WorkTask,
+  SystemErrorLog,
 ];

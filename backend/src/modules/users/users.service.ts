@@ -3,14 +3,19 @@ import {
   OnModuleInit,
   Logger,
   ConflictException,
+  BadRequestException,
+  NotFoundException,
+  InternalServerErrorException,
+  Optional,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, DataSource, Not } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
 import { UserAccount } from '../../entities/user-account.entity';
 import { Employee } from '../../entities/employee.entity';
 import { Role } from '../../entities/role.entity';
 import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UsersService implements OnModuleInit {
@@ -23,6 +28,8 @@ export class UsersService implements OnModuleInit {
     private readonly employeeRepository: Repository<Employee>,
     @InjectRepository(Role)
     private readonly roleRepository: Repository<Role>,
+    @Optional()
+    private readonly dataSource?: DataSource,
   ) {}
 
   async onModuleInit() {
@@ -66,7 +73,8 @@ export class UsersService implements OnModuleInit {
   }
 
   /**
-   * Lấy danh sách tài khoản
+   * UC18 - Xem danh sách tài khoản
+   * HT -> DB : truyVanDanhSachEmployeeVaUser()
    */
   async findAll(): Promise<UserAccount[]> {
     return this.userAccountRepository.find({
@@ -77,6 +85,8 @@ export class UsersService implements OnModuleInit {
       select: {
         userId: true,
         username: true,
+        employeeId: true,
+        roleId: true,
         status: true,
         lastLogin: true,
         createdAt: true,
@@ -90,47 +100,316 @@ export class UsersService implements OnModuleInit {
           fullName: true,
           email: true,
           phone: true,
+          address: true,
           position: true,
+          status: true,
         },
+      },
+      order: {
+        userId: 'ASC',
       },
     });
   }
 
   /**
-   * Tạo tài khoản nhân viên mới
+   * UC18 - Bước: kiemTraRangBuoc(username, role, employeeId)
+   * Kiểm tra:
+   * - Username trùng (TrungUser)
+   * - Role không tồn tại (SaiRole)
+   * - Nhân viên đã có tài khoản (DaCoTK)
    */
-  async create(createUserDto: CreateUserDto): Promise<UserAccount> {
-    const existing = await this.userAccountRepository.findOne({
-      where: { username: createUserDto.username },
-    });
-    if (existing) {
-      throw new ConflictException('Tên đăng nhập đã tồn tại trong hệ thống');
+  async validateAccountConstraints(params: {
+    username?: string;
+    roleId?: number;
+    roleName?: string;
+    employeeId?: number;
+    excludeUserId?: number;
+  }): Promise<{ resolvedRoleId?: number; existingEmployee?: Employee }> {
+    const { username, roleId, roleName, employeeId, excludeUserId } = params;
+
+    // 1. Kiểm tra trùng username
+    if (username) {
+      const existingUsername = await this.userAccountRepository.findOne({
+        where: excludeUserId
+          ? { username, userId: Not(excludeUserId) }
+          : { username },
+      });
+      if (existingUsername) {
+        throw new ConflictException(
+          'Username trùng, Role không tồn tại hoặc Nhân viên đã có tài khoản',
+        );
+      }
     }
 
-    // 1. Tạo nhân viên
-    const employee = this.employeeRepository.create({
-      fullName: createUserDto.fullName,
-      email: createUserDto.email,
-      phone: createUserDto.phone,
-      position: 'Nhân viên kho',
-      status: 'ACTIVE',
-    });
-    const savedEmployee = await this.employeeRepository.save(employee);
+    // 2. Kiểm tra Role hợp lệ
+    let resolvedRoleId = roleId;
+    if (roleId !== undefined && roleId !== null) {
+      const role = await this.roleRepository.findOne({ where: { roleId } });
+      if (!role) {
+        throw new BadRequestException(
+          'Username trùng, Role không tồn tại hoặc Nhân viên đã có tài khoản',
+        );
+      }
+      resolvedRoleId = role.roleId;
+    } else if (roleName) {
+      const role = await this.roleRepository.findOne({
+        where: { name: roleName },
+      });
+      if (!role) {
+        throw new BadRequestException(
+          'Username trùng, Role không tồn tại hoặc Nhân viên đã có tài khoản',
+        );
+      }
+      resolvedRoleId = role.roleId;
+    }
 
-    // 2. Mã hóa mật khẩu với bcrypt
+    // 3. Kiểm tra Nhân viên đã có tài khoản chưa (nếu liên kết employeeId có sẵn)
+    let existingEmployee: Employee | undefined;
+    if (employeeId !== undefined && employeeId !== null) {
+      const emp = await this.employeeRepository.findOne({
+        where: { employeeId },
+      });
+      if (!emp) {
+        throw new BadRequestException(
+          'Username trùng, Role không tồn tại hoặc Nhân viên đã có tài khoản',
+        );
+      }
+      existingEmployee = emp;
+
+      const accWithEmp = await this.userAccountRepository.findOne({
+        where: excludeUserId
+          ? { employeeId, userId: Not(excludeUserId) }
+          : { employeeId },
+      });
+      if (accWithEmp) {
+        throw new ConflictException(
+          'Username trùng, Role không tồn tại hoặc Nhân viên đã có tài khoản',
+        );
+      }
+    }
+
+    return { resolvedRoleId, existingEmployee };
+  }
+
+  /**
+   * UC18 - Tạo mới tài khoản và hồ sơ nhân viên đồng bộ 1-1
+   * Sequence diagram:
+   * - kiemTraRangBuoc(username, role, employeeId)
+   * - batDauTransaction()
+   * - bamMatKhauVaLuu(thongTinTaiKhoan) -> luuEmployeeVaUserAccount()
+   * - Nếu lỗi ghi CSDL -> hoanTacTransaction() -> "Lưu tài khoản thất bại, đã hoàn tác dữ liệu"
+   * - Nếu thành công -> xacNhanTransaction() -> "Lưu tài khoản thành công"
+   */
+  async create(createUserDto: CreateUserDto): Promise<UserAccount> {
+    if (
+      !createUserDto.username?.trim() ||
+      !createUserDto.password?.trim() ||
+      !createUserDto.fullName?.trim()
+    ) {
+      throw new BadRequestException('Vui lòng nhập đầy đủ thông tin bắt buộc');
+    }
+
+    const { resolvedRoleId, existingEmployee } =
+      await this.validateAccountConstraints({
+        username: createUserDto.username.trim(),
+        roleId: createUserDto.roleId,
+        roleName: createUserDto.roleName,
+        employeeId: createUserDto.employeeId,
+      });
+
     const saltRounds = 10;
     const passwordHash = await bcrypt.hash(createUserDto.password, saltRounds);
 
-    // 3. Tạo tài khoản
-    const account = this.userAccountRepository.create({
-      username: createUserDto.username,
-      passwordHash,
-      employeeId: savedEmployee.employeeId,
-      roleId: createUserDto.roleId,
-      status: 'ACTIVE',
+    try {
+      if (this.dataSource) {
+        return await this.dataSource.transaction(async (manager) => {
+          const empRepo = manager.getRepository(Employee);
+          const accRepo = manager.getRepository(UserAccount);
+
+          let savedEmployee: Employee;
+          if (existingEmployee) {
+            existingEmployee.fullName = createUserDto.fullName;
+            if (createUserDto.email !== undefined)
+              existingEmployee.email = createUserDto.email;
+            if (createUserDto.phone !== undefined)
+              existingEmployee.phone = createUserDto.phone;
+            if (createUserDto.address !== undefined)
+              existingEmployee.address = createUserDto.address;
+            if (createUserDto.position !== undefined)
+              existingEmployee.position = createUserDto.position;
+            savedEmployee = await empRepo.save(existingEmployee);
+          } else {
+            const employee = empRepo.create({
+              fullName: createUserDto.fullName,
+              email: createUserDto.email,
+              phone: createUserDto.phone,
+              address: createUserDto.address,
+              position: createUserDto.position || 'Nhân viên kho',
+              status: 'ACTIVE',
+            });
+            savedEmployee = await empRepo.save(employee);
+          }
+
+          const account = accRepo.create({
+            username: createUserDto.username.trim(),
+            passwordHash,
+            employeeId: savedEmployee.employeeId,
+            roleId: resolvedRoleId,
+            status: createUserDto.status || 'ACTIVE',
+          });
+
+          const savedAccount = await accRepo.save(account);
+          return (await accRepo.findOne({
+            where: { userId: savedAccount.userId },
+            relations: { role: true, employee: true },
+          })) as UserAccount;
+        });
+      }
+
+      // Fallback khi chạy unit test không truyền DataSource
+      const employee =
+        existingEmployee ||
+        this.employeeRepository.create({
+          fullName: createUserDto.fullName,
+          email: createUserDto.email,
+          phone: createUserDto.phone,
+          address: createUserDto.address,
+          position: createUserDto.position || 'Nhân viên kho',
+          status: 'ACTIVE',
+        });
+      const savedEmployee = await this.employeeRepository.save(employee);
+
+      const account = this.userAccountRepository.create({
+        username: createUserDto.username.trim(),
+        passwordHash,
+        employeeId: savedEmployee.employeeId,
+        roleId: resolvedRoleId,
+        status: createUserDto.status || 'ACTIVE',
+      });
+      return await this.userAccountRepository.save(account);
+    } catch (error) {
+      if (
+        error instanceof ConflictException ||
+        error instanceof BadRequestException
+      ) {
+        throw error;
+      }
+      this.logger.error(
+        'Lỗi ghi CSDL khi tạo tài khoản (đã rollback): ',
+        error,
+      );
+      throw new InternalServerErrorException(
+        'Lưu tài khoản thất bại, đã hoàn tác dữ liệu',
+      );
+    }
+  }
+
+  /**
+   * UC18 - Cập nhật tài khoản và thông tin nhân viên đồng bộ trong Transaction
+   */
+  async update(
+    userId: number,
+    updateUserDto: UpdateUserDto,
+  ): Promise<UserAccount> {
+    const existingAccount = await this.userAccountRepository.findOne({
+      where: { userId },
+      relations: { employee: true, role: true },
     });
 
-    return this.userAccountRepository.save(account);
+    if (!existingAccount) {
+      throw new NotFoundException('Không tìm thấy tài khoản cần cập nhật');
+    }
+
+    const { resolvedRoleId } = await this.validateAccountConstraints({
+      username: updateUserDto.username?.trim(),
+      roleId: updateUserDto.roleId,
+      roleName: updateUserDto.roleName,
+      employeeId: updateUserDto.employeeId,
+      excludeUserId: userId,
+    });
+
+    let newPasswordHash: string | undefined;
+    if (updateUserDto.password) {
+      newPasswordHash = await bcrypt.hash(updateUserDto.password, 10);
+    }
+
+    try {
+      if (this.dataSource) {
+        return await this.dataSource.transaction(async (manager) => {
+          const empRepo = manager.getRepository(Employee);
+          const accRepo = manager.getRepository(UserAccount);
+
+          if (existingAccount.employee) {
+            if (updateUserDto.fullName !== undefined)
+              existingAccount.employee.fullName = updateUserDto.fullName;
+            if (updateUserDto.email !== undefined)
+              existingAccount.employee.email = updateUserDto.email;
+            if (updateUserDto.phone !== undefined)
+              existingAccount.employee.phone = updateUserDto.phone;
+            if (updateUserDto.address !== undefined)
+              existingAccount.employee.address = updateUserDto.address;
+            if (updateUserDto.position !== undefined)
+              existingAccount.employee.position = updateUserDto.position;
+            await empRepo.save(existingAccount.employee);
+          }
+
+          if (updateUserDto.username !== undefined) {
+            existingAccount.username = updateUserDto.username.trim();
+          }
+          if (newPasswordHash) {
+            existingAccount.passwordHash = newPasswordHash;
+          }
+          if (resolvedRoleId !== undefined) {
+            existingAccount.roleId = resolvedRoleId;
+          }
+          if (updateUserDto.employeeId !== undefined) {
+            existingAccount.employeeId = updateUserDto.employeeId;
+          }
+          if (updateUserDto.status !== undefined) {
+            existingAccount.status = updateUserDto.status;
+          }
+
+          await accRepo.save(existingAccount);
+          return (await accRepo.findOne({
+            where: { userId },
+            relations: { role: true, employee: true },
+          })) as UserAccount;
+        });
+      }
+
+      if (existingAccount.employee && updateUserDto.fullName) {
+        existingAccount.employee.fullName = updateUserDto.fullName;
+        await this.employeeRepository.save(existingAccount.employee);
+      }
+      if (updateUserDto.username) {
+        existingAccount.username = updateUserDto.username.trim();
+      }
+      if (newPasswordHash) {
+        existingAccount.passwordHash = newPasswordHash;
+      }
+      if (resolvedRoleId !== undefined) {
+        existingAccount.roleId = resolvedRoleId;
+      }
+      if (updateUserDto.status !== undefined) {
+        existingAccount.status = updateUserDto.status;
+      }
+      return await this.userAccountRepository.save(existingAccount);
+    } catch (error) {
+      if (
+        error instanceof ConflictException ||
+        error instanceof BadRequestException ||
+        error instanceof NotFoundException
+      ) {
+        throw error;
+      }
+      this.logger.error(
+        'Lỗi ghi CSDL khi cập nhật tài khoản (đã rollback): ',
+        error,
+      );
+      throw new InternalServerErrorException(
+        'Lưu tài khoản thất bại, đã hoàn tác dữ liệu',
+      );
+    }
   }
 
   /**

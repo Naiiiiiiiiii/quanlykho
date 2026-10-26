@@ -51,7 +51,10 @@ export class HttpExceptionFilter implements ExceptionFilter {
     }
 
     // Map các thông báo chuẩn theo đặc tả Sequence Diagram nếu cần
-    if (status === HttpStatus.INTERNAL_SERVER_ERROR) {
+    if (
+      status === HttpStatus.INTERNAL_SERVER_ERROR &&
+      (!message || message === 'Internal Server Error')
+    ) {
       message = 'Không thể hoàn tất thao tác';
     }
 

@@ -23,6 +23,9 @@ export class ImportDetail {
   @Column({ name: 'lot_id', type: 'int', nullable: true })
   lotId?: number;
 
+  @Column({ name: 'location_id', type: 'int', nullable: true })
+  locationId?: number;
+
   @Column({ name: 'quantity', type: 'int' })
   quantity: number;
 

@@ -1,0 +1,1406 @@
+{
+  "roles": [
+    {
+      "role_id": 1,
+      "name": "ADMIN",
+      "description": "Quản trị viên toàn quyền hệ thống"
+    },
+    {
+      "role_id": 2,
+      "name": "USER",
+      "description": "Nhân viên thủ kho / vận hành"
+    }
+  ],
+  "employees": [
+    {
+      "employee_id": 1,
+      "full_name": "Nguyễn Quản Trị",
+      "phone": null,
+      "email": "admin@quanlykho.vn",
+      "address": null,
+      "position": "Quản trị hệ thống",
+      "hire_date": null,
+      "status": "ACTIVE"
+    },
+    {
+      "employee_id": 2,
+      "full_name": "Trần Thủ Kho",
+      "phone": null,
+      "email": "thukho@quanlykho.vn",
+      "address": null,
+      "position": "Thủ kho chính",
+      "hire_date": null,
+      "status": "ACTIVE"
+    },
+    {
+      "employee_id": 3,
+      "full_name": "Lê Tài Khoản Khóa",
+      "phone": null,
+      "email": "khoa@quanlykho.vn",
+      "address": null,
+      "position": "Nhân viên tạm ngưng",
+      "hire_date": null,
+      "status": "INACTIVE"
+    },
+    {
+      "employee_id": 4,
+      "full_name": "Vũ Chưa Phân Quyền",
+      "phone": null,
+      "email": "chuaphanquyen@quanlykho.vn",
+      "address": null,
+      "position": "Nhân viên mới",
+      "hire_date": null,
+      "status": "ACTIVE"
+    }
+  ],
+  "user_accounts": [
+    {
+      "user_id": 1,
+      "employee_id": 1,
+      "username": "admin",
+      "password_hash": "$2b$10$3uPVmhJriKuGozVxUsgeOuxxO.BomSJt8j/.yePRpUCz/pXAfv1zq",
+      "role_id": 1,
+      "status": "ACTIVE",
+      "last_login": "2026-10-26T09:53:54.785Z",
+      "created_at": "2026-10-22T02:29:20.535Z"
+    },
+    {
+      "user_id": 2,
+      "employee_id": 2,
+      "username": "thukho",
+      "password_hash": "$2b$10$3uPVmhJriKuGozVxUsgeOuxxO.BomSJt8j/.yePRpUCz/pXAfv1zq",
+      "role_id": 2,
+      "status": "ACTIVE",
+      "last_login": "2026-10-26T09:53:54.922Z",
+      "created_at": "2026-10-22T02:29:20.606Z"
+    },
+    {
+      "user_id": 3,
+      "employee_id": 3,
+      "username": "khoa_taikhoan",
+      "password_hash": "$2b$10$3uPVmhJriKuGozVxUsgeOuxxO.BomSJt8j/.yePRpUCz/pXAfv1zq",
+      "role_id": 2,
+      "status": "LOCKED",
+      "last_login": null,
+      "created_at": "2026-10-22T02:29:20.678Z"
+    },
+    {
+      "user_id": 4,
+      "employee_id": 4,
+      "username": "chua_phan_quyen",
+      "password_hash": "$2b$10$3uPVmhJriKuGozVxUsgeOuxxO.BomSJt8j/.yePRpUCz/pXAfv1zq",
+      "role_id": null,
+      "status": "ACTIVE",
+      "last_login": null,
+      "created_at": "2026-10-22T02:29:20.754Z"
+    }
+  ],
+  "user_sessions": [
+    {
+      "session_id": 1,
+      "user_id": 1,
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiYWRtaW4iLCJyb2xlIjoiQURNSU4iLCJlbXBsb3llZUlkIjoxLCJpYXQiOjE3OTI5OTkyMjEsImV4cCI6MTc5MzA4NTYyMX0.b3BLJ5K13PekBfHqaFWt6tl9_GIYiTn79dtASYYK0Zs",
+      "is_active": false,
+      "expires_at": "2026-10-27T07:20:21.680Z",
+      "created_at": "2026-10-26T07:20:21.684Z",
+      "revoked_at": "2026-10-26T07:21:40.937Z"
+    },
+    {
+      "session_id": 2,
+      "user_id": 2,
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsInVzZXJuYW1lIjoidGh1a2hvIiwicm9sZSI6IlVTRVIiLCJlbXBsb3llZUlkIjoyLCJpYXQiOjE3OTI5OTkzMDcsImV4cCI6MTc5MzA4NTcwN30.idEyyZHWZYXegh33H3BTxChuN4A3yNcvvV_agfJNaX4",
+      "is_active": false,
+      "expires_at": "2026-10-27T07:21:47.759Z",
+      "created_at": "2026-10-26T07:21:47.760Z",
+      "revoked_at": "2026-10-26T07:23:55.513Z"
+    },
+    {
+      "session_id": 3,
+      "user_id": 1,
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiYWRtaW4iLCJyb2xlIjoiQURNSU4iLCJlbXBsb3llZUlkIjoxLCJpYXQiOjE3OTI5OTk0NDAsImV4cCI6MTc5MzA4NTg0MH0.U5g_rHbfeGhTm7bTHi45Uwm_JMDWDxEdrprL0NSATdU",
+      "is_active": false,
+      "expires_at": "2026-10-27T07:24:00.025Z",
+      "created_at": "2026-10-26T07:24:00.027Z",
+      "revoked_at": "2026-10-26T07:24:07.810Z"
+    },
+    {
+      "session_id": 4,
+      "user_id": 2,
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsInVzZXJuYW1lIjoidGh1a2hvIiwicm9sZSI6IlVTRVIiLCJlbXBsb3llZUlkIjoyLCJpYXQiOjE3OTI5OTk0NTQsImV4cCI6MTc5MzA4NTg1NH0.krP4a1wr0vn96JR2UqVEVa5p4IjUv_SeHplrBeQaWhU",
+      "is_active": false,
+      "expires_at": "2026-10-27T07:24:14.600Z",
+      "created_at": "2026-10-26T07:24:14.602Z",
+      "revoked_at": "2026-10-26T07:49:27.923Z"
+    },
+    {
+      "session_id": 5,
+      "user_id": 1,
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiYWRtaW4iLCJyb2xlIjoiQURNSU4iLCJlbXBsb3llZUlkIjoxLCJpYXQiOjE3OTI5OTk1MDcsImV4cCI6MTc5MzA4NTkwN30.k2QwveC5berfzceAAhFBvVNEKxxQSTBZ2EA90lKdH9E",
+      "is_active": true,
+      "expires_at": "2026-10-27T07:25:07.417Z",
+      "created_at": "2026-10-26T07:25:07.422Z",
+      "revoked_at": null
+    },
+    {
+      "session_id": 6,
+      "user_id": 1,
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiYWRtaW4iLCJyb2xlIjoiQURNSU4iLCJlbXBsb3llZUlkIjoxLCJpYXQiOjE3OTI5OTk4NDUsImV4cCI6MTc5MzA4NjI0NX0.UarcmMjkECWMmz9nMHZcuBTJYwBCnPVD3Ao7-fSIFHY",
+      "is_active": true,
+      "expires_at": "2026-10-27T07:30:45.867Z",
+      "created_at": "2026-10-26T07:30:45.868Z",
+      "revoked_at": null
+    },
+    {
+      "session_id": 7,
+      "user_id": 2,
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsInVzZXJuYW1lIjoidGh1a2hvIiwicm9sZSI6IlVTRVIiLCJlbXBsb3llZUlkIjoyLCJpYXQiOjE3OTI5OTk4NDUsImV4cCI6MTc5MzA4NjI0NX0.EjMIOdyTAhsCo2tJ-EjBFDbaTuADWgV2DmpHZgLt3QA",
+      "is_active": false,
+      "expires_at": "2026-10-27T07:30:45.946Z",
+      "created_at": "2026-10-26T07:30:45.946Z",
+      "revoked_at": "2026-10-26T07:30:46.183Z"
+    },
+    {
+      "session_id": 8,
+      "user_id": 1,
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiYWRtaW4iLCJyb2xlIjoiQURNSU4iLCJlbXBsb3llZUlkIjoxLCJpYXQiOjE3OTI5OTk5ODAsImV4cCI6MTc5MzA4NjM4MH0.5ulJPaP2Ak8BUxoRvVfiW7G5looiDu1wynt5KKpxAv4",
+      "is_active": true,
+      "expires_at": "2026-10-27T07:33:00.242Z",
+      "created_at": "2026-10-26T07:33:00.243Z",
+      "revoked_at": null
+    },
+    {
+      "session_id": 9,
+      "user_id": 2,
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsInVzZXJuYW1lIjoidGh1a2hvIiwicm9sZSI6IlVTRVIiLCJlbXBsb3llZUlkIjoyLCJpYXQiOjE3OTI5OTk5ODAsImV4cCI6MTc5MzA4NjM4MH0.nkpUw3pXBdW0uH1pmOGbhtl_8mIBd6y0GIqp3FO0mMk",
+      "is_active": false,
+      "expires_at": "2026-10-27T07:33:00.320Z",
+      "created_at": "2026-10-26T07:33:00.321Z",
+      "revoked_at": "2026-10-26T07:33:00.610Z"
+    },
+    {
+      "session_id": 10,
+      "user_id": 1,
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiYWRtaW4iLCJyb2xlIjoiQURNSU4iLCJlbXBsb3llZUlkIjoxLCJpYXQiOjE3OTMwMDAwMTYsImV4cCI6MTc5MzA4NjQxNn0.M3NlcIZ5LNWJJv_SCg-nPrcMZamZj4ckFAXwdcBU5bs",
+      "is_active": true,
+      "expires_at": "2026-10-27T07:33:36.810Z",
+      "created_at": "2026-10-26T07:33:36.811Z",
+      "revoked_at": null
+    },
+    {
+      "session_id": 11,
+      "user_id": 2,
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsInVzZXJuYW1lIjoidGh1a2hvIiwicm9sZSI6IlVTRVIiLCJlbXBsb3llZUlkIjoyLCJpYXQiOjE3OTMwMDAwMTYsImV4cCI6MTc5MzA4NjQxNn0.pwG4NiuXlhEbMqLTqKAk4xjbsO2lYxojWSYSSzIZFOg",
+      "is_active": false,
+      "expires_at": "2026-10-27T07:33:36.884Z",
+      "created_at": "2026-10-26T07:33:36.885Z",
+      "revoked_at": "2026-10-26T07:33:37.167Z"
+    },
+    {
+      "session_id": 12,
+      "user_id": 1,
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiYWRtaW4iLCJyb2xlIjoiQURNSU4iLCJlbXBsb3llZUlkIjoxLCJpYXQiOjE3OTMwMDAwNTMsImV4cCI6MTc5MzA4NjQ1M30.iqXVt0txB_eqxhap03-u4f-DaUvyMLv904DDJmUwxo4",
+      "is_active": true,
+      "expires_at": "2026-10-27T07:34:13.787Z",
+      "created_at": "2026-10-26T07:34:13.788Z",
+      "revoked_at": null
+    },
+    {
+      "session_id": 13,
+      "user_id": 2,
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsInVzZXJuYW1lIjoidGh1a2hvIiwicm9sZSI6IlVTRVIiLCJlbXBsb3llZUlkIjoyLCJpYXQiOjE3OTMwMDAwNTMsImV4cCI6MTc5MzA4NjQ1M30.vSewfm4mdT5Y4_yxHKnqjLEfTF4XqDeb4XU44E5mkq8",
+      "is_active": false,
+      "expires_at": "2026-10-27T07:34:13.863Z",
+      "created_at": "2026-10-26T07:34:13.864Z",
+      "revoked_at": "2026-10-26T07:34:14.142Z"
+    },
+    {
+      "session_id": 14,
+      "user_id": 1,
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiYWRtaW4iLCJyb2xlIjoiQURNSU4iLCJlbXBsb3llZUlkIjoxLCJpYXQiOjE3OTMwMDA5NzIsImV4cCI6MTc5MzA4NzM3Mn0.yfwH2bdyfEdFxyxntkAtyUBJyZLtZjBZaw1Z0ojK9ms",
+      "is_active": false,
+      "expires_at": "2026-10-27T07:49:32.275Z",
+      "created_at": "2026-10-26T07:49:32.277Z",
+      "revoked_at": "2026-10-26T09:14:08.690Z"
+    },
+    {
+      "session_id": 15,
+      "user_id": 1,
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiYWRtaW4iLCJyb2xlIjoiQURNSU4iLCJlbXBsb3llZUlkIjoxLCJpYXQiOjE3OTMwMDQ1MDQsImV4cCI6MTc5MzA5MDkwNH0.MStkkjIbO2aDP3adP3Uca2oscFErfX5iwTMAY02TFGo",
+      "is_active": true,
+      "expires_at": "2026-10-27T08:48:24.335Z",
+      "created_at": "2026-10-26T08:48:24.336Z",
+      "revoked_at": null
+    },
+    {
+      "session_id": 16,
+      "user_id": 2,
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsInVzZXJuYW1lIjoidGh1a2hvIiwicm9sZSI6IlVTRVIiLCJlbXBsb3llZUlkIjoyLCJpYXQiOjE3OTMwMDQ1MDQsImV4cCI6MTc5MzA5MDkwNH0.EZ4HbgFziRzLk-DD8lxz5Dy_2w1ldE7mvC1ZP8yuS_k",
+      "is_active": false,
+      "expires_at": "2026-10-27T08:48:24.412Z",
+      "created_at": "2026-10-26T08:48:24.413Z",
+      "revoked_at": "2026-10-26T08:48:24.712Z"
+    },
+    {
+      "session_id": 17,
+      "user_id": 1,
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiYWRtaW4iLCJyb2xlIjoiQURNSU4iLCJlbXBsb3llZUlkIjoxLCJpYXQiOjE3OTMwMDU4MzYsImV4cCI6MTc5MzA5MjIzNn0.PXwk4SsT2bVKA_YDjtJEzsM4IAa1D5okvkiaIJw2DB0",
+      "is_active": true,
+      "expires_at": "2026-10-27T09:10:36.280Z",
+      "created_at": "2026-10-26T09:10:36.281Z",
+      "revoked_at": null
+    },
+    {
+      "session_id": 18,
+      "user_id": 2,
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsInVzZXJuYW1lIjoidGh1a2hvIiwicm9sZSI6IlVTRVIiLCJlbXBsb3llZUlkIjoyLCJpYXQiOjE3OTMwMDU4MzYsImV4cCI6MTc5MzA5MjIzNn0.R06jj1vgqFa3kErCLU69nEfwAuVABH8UPjy186kkqKo",
+      "is_active": false,
+      "expires_at": "2026-10-27T09:10:36.354Z",
+      "created_at": "2026-10-26T09:10:36.355Z",
+      "revoked_at": "2026-10-26T09:10:36.642Z"
+    },
+    {
+      "session_id": 19,
+      "user_id": 1,
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiYWRtaW4iLCJyb2xlIjoiQURNSU4iLCJlbXBsb3llZUlkIjoxLCJpYXQiOjE3OTMwMDYwNTcsImV4cCI6MTc5MzA5MjQ1N30.oAD9LekY8dn5udzNpEBLnOW5tb_F2gfZx847wXDZv1A",
+      "is_active": true,
+      "expires_at": "2026-10-27T09:14:17.722Z",
+      "created_at": "2026-10-26T09:14:17.725Z",
+      "revoked_at": null
+    },
+    {
+      "session_id": 20,
+      "user_id": 1,
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiYWRtaW4iLCJyb2xlIjoiQURNSU4iLCJlbXBsb3llZUlkIjoxLCJpYXQiOjE3OTMwMDY4MTgsImV4cCI6MTc5MzA5MzIxOH0.IaHU167BlmrHgrl7ZrzYIAwHGGnAHMHJl5yTp-bMNxY",
+      "is_active": true,
+      "expires_at": "2026-10-27T09:26:58.557Z",
+      "created_at": "2026-10-26T09:26:58.563Z",
+      "revoked_at": null
+    },
+    {
+      "session_id": 21,
+      "user_id": 2,
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsInVzZXJuYW1lIjoidGh1a2hvIiwicm9sZSI6IlVTRVIiLCJlbXBsb3llZUlkIjoyLCJpYXQiOjE3OTMwMDY4MTgsImV4cCI6MTc5MzA5MzIxOH0.xy-ZBpCSG9vYZnCnZ2ejYTl79_UtvGIcgEod75Z52xQ",
+      "is_active": false,
+      "expires_at": "2026-10-27T09:26:58.742Z",
+      "created_at": "2026-10-26T09:26:58.748Z",
+      "revoked_at": "2026-10-26T09:26:59.435Z"
+    },
+    {
+      "session_id": 22,
+      "user_id": 1,
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiYWRtaW4iLCJyb2xlIjoiQURNSU4iLCJlbXBsb3llZUlkIjoxLCJpYXQiOjE3OTMwMDcxNzksImV4cCI6MTc5MzA5MzU3OX0.YiNvJbkH3p1c-TB_DeBN0-i9jK9BtMk46u1rZ5fyGR0",
+      "is_active": true,
+      "expires_at": "2026-10-27T09:32:59.123Z",
+      "created_at": "2026-10-26T09:32:59.125Z",
+      "revoked_at": null
+    },
+    {
+      "session_id": 23,
+      "user_id": 1,
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiYWRtaW4iLCJyb2xlIjoiQURNSU4iLCJlbXBsb3llZUlkIjoxLCJpYXQiOjE3OTMwMDcxOTIsImV4cCI6MTc5MzA5MzU5Mn0.pxA4F84dSf_4d8LOum_nLaJxPlU5sR71Fvc1yVbj0UM",
+      "is_active": true,
+      "expires_at": "2026-10-27T09:33:12.817Z",
+      "created_at": "2026-10-26T09:33:12.819Z",
+      "revoked_at": null
+    },
+    {
+      "session_id": 24,
+      "user_id": 1,
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiYWRtaW4iLCJyb2xlIjoiQURNSU4iLCJlbXBsb3llZUlkIjoxLCJpYXQiOjE3OTMwMDcyMDAsImV4cCI6MTc5MzA5MzYwMH0.4CvponjrRO5ht8gAebkbRr8arZkku2y1ykVbxy1bUY0",
+      "is_active": true,
+      "expires_at": "2026-10-27T09:33:20.142Z",
+      "created_at": "2026-10-26T09:33:20.143Z",
+      "revoked_at": null
+    },
+    {
+      "session_id": 25,
+      "user_id": 1,
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiYWRtaW4iLCJyb2xlIjoiQURNSU4iLCJlbXBsb3llZUlkIjoxLCJpYXQiOjE3OTMwMDcyMjAsImV4cCI6MTc5MzA5MzYyMH0.IDZ-CXuVZnFA2BIhrtSYUhKLRVgJ1Qgzgypez0VUk_I",
+      "is_active": true,
+      "expires_at": "2026-10-27T09:33:40.476Z",
+      "created_at": "2026-10-26T09:33:40.478Z",
+      "revoked_at": null
+    },
+    {
+      "session_id": 26,
+      "user_id": 1,
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiYWRtaW4iLCJyb2xlIjoiQURNSU4iLCJlbXBsb3llZUlkIjoxLCJpYXQiOjE3OTMwMDcyMzYsImV4cCI6MTc5MzA5MzYzNn0.P4vV-J-uQODjRF1aQSXC0PhPsSUqZk5fZvocATkkiew",
+      "is_active": true,
+      "expires_at": "2026-10-27T09:33:56.025Z",
+      "created_at": "2026-10-26T09:33:56.027Z",
+      "revoked_at": null
+    },
+    {
+      "session_id": 27,
+      "user_id": 1,
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiYWRtaW4iLCJyb2xlIjoiQURNSU4iLCJlbXBsb3llZUlkIjoxLCJpYXQiOjE3OTMwMDcyNDYsImV4cCI6MTc5MzA5MzY0Nn0.sSJ4oGiF60z4vFwTqCHuL06e1WGXlLw3wpMv1LVp-UA",
+      "is_active": true,
+      "expires_at": "2026-10-27T09:34:06.434Z",
+      "created_at": "2026-10-26T09:34:06.435Z",
+      "revoked_at": null
+    },
+    {
+      "session_id": 28,
+      "user_id": 1,
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiYWRtaW4iLCJyb2xlIjoiQURNSU4iLCJlbXBsb3llZUlkIjoxLCJpYXQiOjE3OTMwMDcyODMsImV4cCI6MTc5MzA5MzY4M30.-a5vXgpePwh7Q-0rjefdIDLATuPgQlqvKDdQqSPFxbQ",
+      "is_active": true,
+      "expires_at": "2026-10-27T09:34:43.120Z",
+      "created_at": "2026-10-26T09:34:43.126Z",
+      "revoked_at": null
+    },
+    {
+      "session_id": 29,
+      "user_id": 1,
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiYWRtaW4iLCJyb2xlIjoiQURNSU4iLCJlbXBsb3llZUlkIjoxLCJpYXQiOjE3OTMwMDc3MTAsImV4cCI6MTc5MzA5NDExMH0.nUG-OdUCfRpHDzZ7d0EcFZffz4tjR0mtOlkx0k7053s",
+      "is_active": true,
+      "expires_at": "2026-10-27T09:41:50.856Z",
+      "created_at": "2026-10-26T09:41:50.857Z",
+      "revoked_at": null
+    },
+    {
+      "session_id": 30,
+      "user_id": 2,
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsInVzZXJuYW1lIjoidGh1a2hvIiwicm9sZSI6IlVTRVIiLCJlbXBsb3llZUlkIjoyLCJpYXQiOjE3OTMwMDc3MTAsImV4cCI6MTc5MzA5NDExMH0.1uSxpSCboe6hYGqelHxoYmZgINI1_SN6VEY1GpzQwao",
+      "is_active": false,
+      "expires_at": "2026-10-27T09:41:50.945Z",
+      "created_at": "2026-10-26T09:41:50.945Z",
+      "revoked_at": "2026-10-26T09:41:51.342Z"
+    },
+    {
+      "session_id": 31,
+      "user_id": 1,
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiYWRtaW4iLCJyb2xlIjoiQURNSU4iLCJlbXBsb3llZUlkIjoxLCJpYXQiOjE3OTMwMDg0MzQsImV4cCI6MTc5MzA5NDgzNH0.L06pKtBwew9nwrylRxbNvfLzaPdgkSrKSb3pMHtkgN0",
+      "is_active": true,
+      "expires_at": "2026-10-27T09:53:54.765Z",
+      "created_at": "2026-10-26T09:53:54.770Z",
+      "revoked_at": null
+    },
+    {
+      "session_id": 32,
+      "user_id": 2,
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsInVzZXJuYW1lIjoidGh1a2hvIiwicm9sZSI6IlVTRVIiLCJlbXBsb3llZUlkIjoyLCJpYXQiOjE3OTMwMDg0MzQsImV4cCI6MTc5MzA5NDgzNH0.MRm_ujRHOUzRcmPYKO08h1DFkyONdKRfhAMrxLtETf4",
+      "is_active": false,
+      "expires_at": "2026-10-27T09:53:54.917Z",
+      "created_at": "2026-10-26T09:53:54.921Z",
+      "revoked_at": "2026-10-26T09:53:55.654Z"
+    }
+  ],
+  "warehouses": [
+    {
+      "warehouse_id": 1,
+      "name": "Kho Trung Tâm Quận 7",
+      "address": "120 Nguyễn Văn Linh, Quận 7, TP.HCM",
+      "area": "1500.00",
+      "capacity": 5000,
+      "start_date": "2024-12-31T17:00:00.000Z",
+      "end_date": "2027-12-30T17:00:00.000Z",
+      "status": "ACTIVE",
+      "description": "Kho tổng lưu trữ quần áo thời trang nam nữ",
+      "created_at": "2026-10-26T07:19:18.347Z",
+      "updated_at": "2026-10-26T07:19:18.347Z"
+    },
+    {
+      "warehouse_id": 2,
+      "name": "Kho Chi Nhánh Thủ Đức",
+      "address": "45 Võ Văn Ngân, TP. Thủ Đức, TP.HCM",
+      "area": "800.00",
+      "capacity": 2500,
+      "start_date": "2025-05-31T17:00:00.000Z",
+      "end_date": "2026-11-04T17:00:00.000Z",
+      "status": "ACTIVE",
+      "description": "Kho trung chuyển hàng xuất bán khu vực phía Đông",
+      "created_at": "2026-10-26T07:19:18.352Z",
+      "updated_at": "2026-10-26T07:19:18.352Z"
+    }
+  ],
+  "warehouse_zones": [
+    {
+      "zone_id": 1,
+      "warehouse_id": 1,
+      "name": "Khu A - Hàng Áo Thun & Sơ Mi",
+      "description": "Khu vực lưu trữ áo thời trang"
+    },
+    {
+      "zone_id": 2,
+      "warehouse_id": 2,
+      "name": "Khu B - Hàng Quần Jeans & Kaki",
+      "description": "Khu vực lưu trữ quần dài"
+    }
+  ],
+  "racks": [
+    {
+      "rack_id": 1,
+      "zone_id": 1,
+      "name": "Kệ A1",
+      "number_of_levels": 3,
+      "capacity": 1000,
+      "status": "AVAILABLE"
+    },
+    {
+      "rack_id": 2,
+      "zone_id": 2,
+      "name": "Kệ B1",
+      "number_of_levels": 2,
+      "capacity": 800,
+      "status": "AVAILABLE"
+    }
+  ],
+  "storage_locations": [
+    {
+      "location_id": 1,
+      "rack_id": 1,
+      "level": 1,
+      "code": "LOC-A1-L1",
+      "capacity": 500,
+      "current_quantity": 120,
+      "status": "AVAILABLE"
+    },
+    {
+      "location_id": 2,
+      "rack_id": 1,
+      "level": 2,
+      "code": "LOC-A1-L2",
+      "capacity": 500,
+      "current_quantity": 80,
+      "status": "AVAILABLE"
+    },
+    {
+      "location_id": 3,
+      "rack_id": 2,
+      "level": 1,
+      "code": "LOC-B1-L1",
+      "capacity": 800,
+      "current_quantity": 50,
+      "status": "AVAILABLE"
+    }
+  ],
+  "categories": [
+    {
+      "category_id": 1,
+      "name": "Áo thời trang",
+      "description": "Áo thun Polo, T-Shirt, Áo sơ mi công sở"
+    },
+    {
+      "category_id": 2,
+      "name": "Quần thời trang",
+      "description": "Quần Jeans, Kaki, Quần Tây"
+    }
+  ],
+  "products": [
+    {
+      "product_id": 1,
+      "category_id": 1,
+      "name": "Áo Polo Nam Coolmax Cao Cấp",
+      "description": "Áo Polo chất liệu thoáng khí, co giãn 4 chiều",
+      "brand": "CoolMate",
+      "unit": "Chiếc",
+      "status": "ACTIVE",
+      "created_at": "2026-10-26T07:19:18.387Z",
+      "updated_at": "2026-10-26T07:19:18.387Z"
+    },
+    {
+      "product_id": 2,
+      "category_id": 2,
+      "name": "Quần Jeans Slimfit Co Giãn",
+      "description": null,
+      "brand": "Routine",
+      "unit": "Chiếc",
+      "status": "ACTIVE",
+      "created_at": "2026-10-26T07:19:18.390Z",
+      "updated_at": "2026-10-26T07:19:18.390Z"
+    }
+  ],
+  "colors": [
+    {
+      "color_id": 1,
+      "name": "Xanh Navy",
+      "hex_code": "#1E3A8A"
+    },
+    {
+      "color_id": 2,
+      "name": "Trắng",
+      "hex_code": "#FFFFFF"
+    }
+  ],
+  "sizes": [
+    {
+      "size_id": 1,
+      "name": "M",
+      "description": "Size M (55-65kg)"
+    },
+    {
+      "size_id": 2,
+      "name": "L",
+      "description": "Size L (65-75kg)"
+    }
+  ],
+  "product_variants": [
+    {
+      "variant_id": 1,
+      "product_id": 1,
+      "size_id": 1,
+      "color_id": 1,
+      "sku": "POLO-CM-NAVY-M",
+      "barcode": "8930001112223",
+      "weight": "0.25",
+      "status": "ACTIVE"
+    },
+    {
+      "variant_id": 2,
+      "product_id": 1,
+      "size_id": 2,
+      "color_id": 2,
+      "sku": "POLO-CM-WHT-L",
+      "barcode": "8930001112224",
+      "weight": "0.27",
+      "status": "ACTIVE"
+    },
+    {
+      "variant_id": 3,
+      "product_id": 2,
+      "size_id": 2,
+      "color_id": 1,
+      "sku": "JEAN-RT-NAVY-L",
+      "barcode": "8930001112225",
+      "weight": "0.55",
+      "status": "ACTIVE"
+    }
+  ],
+  "quality_statuses": [
+    {
+      "quality_status_id": 1,
+      "name": "GOOD",
+      "description": "Đạt chuẩn chất lượng - Cho phép xuất kho"
+    },
+    {
+      "quality_status_id": 2,
+      "name": "DAMAGED",
+      "description": "Hàng lỗi/hỏng - Không được phép xuất bán"
+    }
+  ],
+  "lots": [
+    {
+      "lot_id": 1,
+      "variant_id": 1,
+      "lot_code": "LOT-2026-001",
+      "manufacture_date": "2026-01-14T17:00:00.000Z",
+      "received_date": "2026-01-31T17:00:00.000Z",
+      "expiry_date": "2029-01-14T17:00:00.000Z",
+      "initial_quantity": 200,
+      "remaining_quantity": 120,
+      "status": "AVAILABLE"
+    },
+    {
+      "lot_id": 2,
+      "variant_id": 2,
+      "lot_code": "LOT-2026-002",
+      "manufacture_date": "2026-02-09T17:00:00.000Z",
+      "received_date": "2026-02-19T17:00:00.000Z",
+      "expiry_date": "2029-02-09T17:00:00.000Z",
+      "initial_quantity": 150,
+      "remaining_quantity": 80,
+      "status": "AVAILABLE"
+    },
+    {
+      "lot_id": 3,
+      "variant_id": 3,
+      "lot_code": "LOT-2026-003",
+      "manufacture_date": "2026-02-28T17:00:00.000Z",
+      "received_date": "2026-03-09T17:00:00.000Z",
+      "expiry_date": "2029-02-28T17:00:00.000Z",
+      "initial_quantity": 100,
+      "remaining_quantity": 50,
+      "status": "AVAILABLE"
+    },
+    {
+      "lot_id": 4,
+      "variant_id": 1,
+      "lot_code": "LOT-1792999846072-54",
+      "manufacture_date": null,
+      "received_date": "2026-10-25T17:00:00.000Z",
+      "expiry_date": null,
+      "initial_quantity": 5,
+      "remaining_quantity": 5,
+      "status": "AVAILABLE"
+    },
+    {
+      "lot_id": 5,
+      "variant_id": 1,
+      "lot_code": "LOT-1792999980445-606",
+      "manufacture_date": null,
+      "received_date": "2026-10-25T17:00:00.000Z",
+      "expiry_date": null,
+      "initial_quantity": 5,
+      "remaining_quantity": 5,
+      "status": "AVAILABLE"
+    },
+    {
+      "lot_id": 6,
+      "variant_id": 1,
+      "lot_code": "LOT-1793000017009-278",
+      "manufacture_date": null,
+      "received_date": "2026-10-25T17:00:00.000Z",
+      "expiry_date": null,
+      "initial_quantity": 5,
+      "remaining_quantity": 5,
+      "status": "AVAILABLE"
+    },
+    {
+      "lot_id": 7,
+      "variant_id": 1,
+      "lot_code": "LOT-1793000053986-222",
+      "manufacture_date": null,
+      "received_date": "2026-10-25T17:00:00.000Z",
+      "expiry_date": null,
+      "initial_quantity": 5,
+      "remaining_quantity": 5,
+      "status": "AVAILABLE"
+    },
+    {
+      "lot_id": 8,
+      "variant_id": 1,
+      "lot_code": "LOT-1793004504539-775",
+      "manufacture_date": null,
+      "received_date": "2026-10-25T17:00:00.000Z",
+      "expiry_date": null,
+      "initial_quantity": 5,
+      "remaining_quantity": 5,
+      "status": "AVAILABLE"
+    },
+    {
+      "lot_id": 9,
+      "variant_id": 1,
+      "lot_code": "LOT-1793005836487-299",
+      "manufacture_date": null,
+      "received_date": "2026-10-25T17:00:00.000Z",
+      "expiry_date": null,
+      "initial_quantity": 5,
+      "remaining_quantity": 5,
+      "status": "AVAILABLE"
+    },
+    {
+      "lot_id": 10,
+      "variant_id": 1,
+      "lot_code": "LOT-1793006819031-343",
+      "manufacture_date": null,
+      "received_date": "2026-10-25T17:00:00.000Z",
+      "expiry_date": null,
+      "initial_quantity": 5,
+      "remaining_quantity": 5,
+      "status": "AVAILABLE"
+    },
+    {
+      "lot_id": 11,
+      "variant_id": 1,
+      "lot_code": "LOT-1793007711123-869",
+      "manufacture_date": null,
+      "received_date": "2026-10-25T17:00:00.000Z",
+      "expiry_date": null,
+      "initial_quantity": 5,
+      "remaining_quantity": 5,
+      "status": "AVAILABLE"
+    },
+    {
+      "lot_id": 12,
+      "variant_id": 1,
+      "lot_code": "LOT-1793008435194-602",
+      "manufacture_date": null,
+      "received_date": "2026-10-25T17:00:00.000Z",
+      "expiry_date": null,
+      "initial_quantity": 5,
+      "remaining_quantity": 5,
+      "status": "AVAILABLE"
+    }
+  ],
+  "inventory_locations": [
+    {
+      "inventory_location_id": 1,
+      "variant_id": 1,
+      "lot_id": 1,
+      "location_id": 1,
+      "quantity": 120,
+      "updated_at": "2026-10-26T07:19:18.414Z"
+    },
+    {
+      "inventory_location_id": 2,
+      "variant_id": 2,
+      "lot_id": 2,
+      "location_id": 2,
+      "quantity": 80,
+      "updated_at": "2026-10-26T07:19:18.414Z"
+    },
+    {
+      "inventory_location_id": 3,
+      "variant_id": 3,
+      "lot_id": 3,
+      "location_id": 3,
+      "quantity": 50,
+      "updated_at": "2026-10-26T07:19:18.418Z"
+    }
+  ],
+  "quality_checks": [
+    {
+      "quality_check_id": 1,
+      "lot_id": 1,
+      "employee_id": null,
+      "check_date": "2026-10-26T07:19:18.409Z",
+      "status_id": 1,
+      "quantity": 120,
+      "description": "Lô hàng đạt tiêu chuẩn xuất kho"
+    },
+    {
+      "quality_check_id": 2,
+      "lot_id": 2,
+      "employee_id": null,
+      "check_date": "2026-10-26T07:19:18.409Z",
+      "status_id": 1,
+      "quantity": 80,
+      "description": "Lô hàng đạt tiêu chuẩn xuất kho"
+    },
+    {
+      "quality_check_id": 3,
+      "lot_id": 3,
+      "employee_id": null,
+      "check_date": "2026-10-26T07:19:18.409Z",
+      "status_id": 2,
+      "quantity": 10,
+      "description": "Phát hiện 10 sản phẩm lỗi đường may"
+    }
+  ],
+  "import_receipts": [
+    {
+      "import_id": 1,
+      "warehouse_id": 1,
+      "employee_id": null,
+      "import_date": "2026-07-10T09:00:00.000Z",
+      "supplier_name": "Công ty May Mặc Việt Tiến",
+      "total_quantity": 200,
+      "status": "COMPLETED",
+      "note": "Nhập lô hàng Áo Polo đợt 1"
+    },
+    {
+      "import_id": 2,
+      "warehouse_id": 1,
+      "employee_id": 1,
+      "import_date": "2026-10-26T07:30:46.076Z",
+      "supplier_name": "NCC Kiểm Thử E2E",
+      "total_quantity": 5,
+      "status": "COMPLETED",
+      "note": null
+    },
+    {
+      "import_id": 3,
+      "warehouse_id": 1,
+      "employee_id": 1,
+      "import_date": "2026-10-26T07:33:00.449Z",
+      "supplier_name": "NCC Kiểm Thử E2E",
+      "total_quantity": 5,
+      "status": "COMPLETED",
+      "note": null
+    },
+    {
+      "import_id": 4,
+      "warehouse_id": 1,
+      "employee_id": 1,
+      "import_date": "2026-10-26T07:33:37.012Z",
+      "supplier_name": "NCC Kiểm Thử E2E",
+      "total_quantity": 5,
+      "status": "COMPLETED",
+      "note": null
+    },
+    {
+      "import_id": 5,
+      "warehouse_id": 1,
+      "employee_id": 1,
+      "import_date": "2026-10-26T07:34:13.990Z",
+      "supplier_name": "NCC Kiểm Thử E2E",
+      "total_quantity": 5,
+      "status": "COMPLETED",
+      "note": null
+    },
+    {
+      "import_id": 6,
+      "warehouse_id": 1,
+      "employee_id": 1,
+      "import_date": "2026-10-26T08:48:24.543Z",
+      "supplier_name": "NCC Kiểm Thử E2E",
+      "total_quantity": 5,
+      "status": "COMPLETED",
+      "note": null
+    },
+    {
+      "import_id": 7,
+      "warehouse_id": 1,
+      "employee_id": 1,
+      "import_date": "2026-10-26T09:10:36.491Z",
+      "supplier_name": "NCC Kiểm Thử E2E",
+      "total_quantity": 5,
+      "status": "COMPLETED",
+      "note": null
+    },
+    {
+      "import_id": 8,
+      "warehouse_id": 1,
+      "employee_id": 1,
+      "import_date": "2026-10-26T09:26:59.037Z",
+      "supplier_name": "NCC Kiểm Thử E2E",
+      "total_quantity": 5,
+      "status": "COMPLETED",
+      "note": null
+    },
+    {
+      "import_id": 9,
+      "warehouse_id": 1,
+      "employee_id": 1,
+      "import_date": "2026-10-26T09:41:51.128Z",
+      "supplier_name": "NCC Kiểm Thử E2E",
+      "total_quantity": 5,
+      "status": "COMPLETED",
+      "note": null
+    },
+    {
+      "import_id": 10,
+      "warehouse_id": 1,
+      "employee_id": 1,
+      "import_date": "2026-10-26T09:53:55.201Z",
+      "supplier_name": "NCC Kiểm Thử E2E",
+      "total_quantity": 5,
+      "status": "COMPLETED",
+      "note": null
+    }
+  ],
+  "import_details": [
+    {
+      "import_detail_id": 1,
+      "import_id": 1,
+      "variant_id": 1,
+      "lot_id": 1,
+      "quantity": 200,
+      "unit": "Chiếc",
+      "location_id": 1
+    },
+    {
+      "import_detail_id": 2,
+      "import_id": 2,
+      "variant_id": 1,
+      "lot_id": 4,
+      "quantity": 5,
+      "unit": "Chiếc",
+      "location_id": null
+    },
+    {
+      "import_detail_id": 3,
+      "import_id": 3,
+      "variant_id": 1,
+      "lot_id": 5,
+      "quantity": 5,
+      "unit": "Chiếc",
+      "location_id": null
+    },
+    {
+      "import_detail_id": 4,
+      "import_id": 4,
+      "variant_id": 1,
+      "lot_id": 6,
+      "quantity": 5,
+      "unit": "Chiếc",
+      "location_id": null
+    },
+    {
+      "import_detail_id": 5,
+      "import_id": 5,
+      "variant_id": 1,
+      "lot_id": 7,
+      "quantity": 5,
+      "unit": "Chiếc",
+      "location_id": null
+    },
+    {
+      "import_detail_id": 6,
+      "import_id": 6,
+      "variant_id": 1,
+      "lot_id": 8,
+      "quantity": 5,
+      "unit": "Chiếc",
+      "location_id": null
+    },
+    {
+      "import_detail_id": 7,
+      "import_id": 7,
+      "variant_id": 1,
+      "lot_id": 9,
+      "quantity": 5,
+      "unit": "Chiếc",
+      "location_id": null
+    },
+    {
+      "import_detail_id": 8,
+      "import_id": 8,
+      "variant_id": 1,
+      "lot_id": 10,
+      "quantity": 5,
+      "unit": "Chiếc",
+      "location_id": null
+    },
+    {
+      "import_detail_id": 9,
+      "import_id": 9,
+      "variant_id": 1,
+      "lot_id": 11,
+      "quantity": 5,
+      "unit": "Chiếc",
+      "location_id": null
+    },
+    {
+      "import_detail_id": 10,
+      "import_id": 10,
+      "variant_id": 1,
+      "lot_id": 12,
+      "quantity": 5,
+      "unit": "Chiếc",
+      "location_id": null
+    }
+  ],
+  "export_receipts": [
+    {
+      "export_id": 1,
+      "warehouse_id": 1,
+      "employee_id": null,
+      "export_date": "2026-07-20T14:00:00.000Z",
+      "reason": "Xuất bán",
+      "receiver": "Hệ thống Cửa hàng Thời trang TP.HCM",
+      "status": "COMPLETED",
+      "note": "Phiếu xuất bán sỉ định kỳ"
+    },
+    {
+      "export_id": 2,
+      "warehouse_id": 1,
+      "employee_id": null,
+      "export_date": "2026-08-18T10:30:00.000Z",
+      "reason": "Xuất bán",
+      "receiver": "Hệ thống Cửa hàng Thời trang TP.HCM",
+      "status": "COMPLETED",
+      "note": "Phiếu xuất bán sỉ định kỳ"
+    },
+    {
+      "export_id": 3,
+      "warehouse_id": 1,
+      "employee_id": null,
+      "export_date": "2026-09-22T16:15:00.000Z",
+      "reason": "Xuất bán",
+      "receiver": "Hệ thống Cửa hàng Thời trang TP.HCM",
+      "status": "COMPLETED",
+      "note": "Phiếu xuất bán sỉ định kỳ"
+    }
+  ],
+  "export_details": [
+    {
+      "export_detail_id": 1,
+      "export_id": 1,
+      "variant_id": 1,
+      "lot_id": 1,
+      "quantity": 30,
+      "location_id": 1,
+      "unit_price": "250000.00",
+      "discount": "500000.00"
+    },
+    {
+      "export_detail_id": 2,
+      "export_id": 2,
+      "variant_id": 1,
+      "lot_id": 1,
+      "quantity": 40,
+      "location_id": 1,
+      "unit_price": "250000.00",
+      "discount": "0.00"
+    },
+    {
+      "export_detail_id": 3,
+      "export_id": 3,
+      "variant_id": 1,
+      "lot_id": 1,
+      "quantity": 50,
+      "location_id": 1,
+      "unit_price": "250000.00",
+      "discount": "500000.00"
+    }
+  ],
+  "deliveries": [],
+  "delivery_details": [],
+  "facility_incidents": [
+    {
+      "incident_id": 1,
+      "warehouse_id": 1,
+      "location_description": "Khu A - Kệ A1 - Tầng 2",
+      "facility_name": "Thanh đỡ kệ sắt A1",
+      "description": "Thanh đỡ kệ tầng 2 có dấu hiệu cong nhẹ do quá tải cục bộ",
+      "image_url": null,
+      "status": "Mới",
+      "repair_note": null,
+      "reported_by": null,
+      "confirmed_by": null,
+      "created_at": "2026-10-26T07:19:18.454Z",
+      "updated_at": "2026-10-26T07:19:18.454Z"
+    },
+    {
+      "incident_id": 2,
+      "warehouse_id": 1,
+      "location_description": "Cửa xuất hàng số 2",
+      "facility_name": "Hệ thống đèn chiếu sáng LED",
+      "description": "Đèn chiếu sáng khu vực đóng gói nhấp nháy, đã thay bóng mới chờ nghiệm thu",
+      "image_url": null,
+      "status": "Chờ xác nhận",
+      "repair_note": "Đội kỹ thuật đã thay chấn lưu và bóng LED 50W",
+      "reported_by": null,
+      "confirmed_by": null,
+      "created_at": "2026-10-26T07:19:18.454Z",
+      "updated_at": "2026-10-26T07:19:18.454Z"
+    }
+  ],
+  "rental_contracts": [
+    {
+      "contract_id": 1,
+      "warehouse_id": 1,
+      "lessor_name": "Công ty BĐS Công Nghiệp Nam Sài Gòn",
+      "start_date": "2024-12-31T17:00:00.000Z",
+      "end_date": "2027-12-30T17:00:00.000Z",
+      "rental_price": "45000000.00",
+      "status": "DangHieuLuc",
+      "warning_email_sent": false,
+      "email_error_log": null,
+      "note": "Hợp đồng thuê dài hạn Kho Trung Tâm Quận 7",
+      "created_at": "2026-10-26T07:19:18.459Z",
+      "updated_at": "2026-10-26T07:19:18.459Z"
+    },
+    {
+      "contract_id": 2,
+      "warehouse_id": 2,
+      "lessor_name": "Tổng Công ty Kho Vận Đông Nam Bộ",
+      "start_date": "2025-10-31T17:00:00.000Z",
+      "end_date": "2026-11-04T17:00:00.000Z",
+      "rental_price": "28000000.00",
+      "status": "DangHieuLuc",
+      "warning_email_sent": false,
+      "email_error_log": null,
+      "note": "Hợp đồng sắp đến hạn cần gia hạn (test UC09)",
+      "created_at": "2026-10-26T07:19:18.459Z",
+      "updated_at": "2026-10-26T07:19:18.459Z"
+    },
+    {
+      "contract_id": 3,
+      "warehouse_id": 1,
+      "lessor_name": "Đơn vị Cho thuê Kho Phụ Cũ",
+      "start_date": "2023-12-31T17:00:00.000Z",
+      "end_date": "2024-12-30T17:00:00.000Z",
+      "rental_price": "15000000.00",
+      "status": "DaChamDut",
+      "warning_email_sent": true,
+      "email_error_log": null,
+      "note": "Hợp đồng đã chấm dứt (có thể xóa trong UC08)",
+      "created_at": "2026-10-26T07:19:18.459Z",
+      "updated_at": "2026-10-26T07:19:18.459Z"
+    }
+  ],
+  "conversations": [
+    {
+      "conversation_id": 1,
+      "title": "Kênh Điều Phối Vận Hành Kho Trung Tâm",
+      "type": "GROUP",
+      "created_at": "2026-10-26T07:19:18.465Z",
+      "updated_at": "2026-10-26T07:19:18.465Z"
+    }
+  ],
+  "conversation_participants": [
+    {
+      "participant_id": 1,
+      "conversation_id": 1,
+      "user_id": 1,
+      "joined_at": "2026-10-26T07:19:18.466Z"
+    },
+    {
+      "participant_id": 2,
+      "conversation_id": 1,
+      "user_id": 2,
+      "joined_at": "2026-10-26T07:19:18.466Z"
+    }
+  ],
+  "messages": [
+    {
+      "message_id": 1,
+      "conversation_id": 1,
+      "sender_id": 1,
+      "content": "Chào Thủ kho, hôm nay lô hàng Áo Polo LOT-2026-001 đã kiểm định xong chưa?",
+      "created_at": "2026-10-26T07:19:18.470Z"
+    },
+    {
+      "message_id": 2,
+      "conversation_id": 1,
+      "sender_id": 2,
+      "content": "Báo cáo Admin, lô LOT-2026-001 đã đạt chuẩn 100% và xếp lên kệ LOC-A1-L1 rồi ạ.",
+      "created_at": "2026-10-26T07:19:18.470Z"
+    },
+    {
+      "message_id": 3,
+      "conversation_id": 1,
+      "sender_id": 2,
+      "content": "admin đẹp trai",
+      "created_at": "2026-10-26T07:23:51.911Z"
+    },
+    {
+      "message_id": 4,
+      "conversation_id": 1,
+      "sender_id": 2,
+      "content": "ok anh đẹp mà em",
+      "created_at": "2026-10-26T07:24:30.748Z"
+    },
+    {
+      "message_id": 5,
+      "conversation_id": 1,
+      "sender_id": 1,
+      "content": "ok em",
+      "created_at": "2026-10-26T07:25:14.793Z"
+    },
+    {
+      "message_id": 6,
+      "conversation_id": 1,
+      "sender_id": 2,
+      "content": "ok anh",
+      "created_at": "2026-10-26T07:25:32.675Z"
+    }
+  ],
+  "salary_records": [
+    {
+      "salary_id": 1,
+      "employee_id": 1,
+      "period": "2026-10",
+      "base_salary": "18000000.00",
+      "bonus": "3500000.00",
+      "deduction": "0.00",
+      "total_salary": "21500000.00",
+      "status": "PAID",
+      "note": "Lương và thưởng năng suất vận hành kho tháng 10/2026",
+      "created_at": "2026-10-26T07:19:18.480Z"
+    },
+    {
+      "salary_id": 2,
+      "employee_id": 2,
+      "period": "2026-10",
+      "base_salary": "11000000.00",
+      "bonus": "2000000.00",
+      "deduction": "0.00",
+      "total_salary": "13000000.00",
+      "status": "PAID",
+      "note": "Lương và thưởng năng suất vận hành kho tháng 10/2026",
+      "created_at": "2026-10-26T07:19:18.484Z"
+    },
+    {
+      "salary_id": 3,
+      "employee_id": 4,
+      "period": "2026-10",
+      "base_salary": "11000000.00",
+      "bonus": "2000000.00",
+      "deduction": "0.00",
+      "total_salary": "13000000.00",
+      "status": "PAID",
+      "note": "Lương và thưởng năng suất vận hành kho tháng 10/2026",
+      "created_at": "2026-10-26T07:19:18.487Z"
+    }
+  ],
+  "work_tasks": [
+    {
+      "task_id": 1,
+      "employee_id": 1,
+      "warehouse_id": 1,
+      "task_type": "NHAP_KHO",
+      "title": "Tiếp nhận và xếp kệ lô Áo Polo LOT-2026-001",
+      "description": "Kiểm đếm số lượng và cập nhật vị trí LOC-A1-L1",
+      "status": "COMPLETED",
+      "due_date": "2026-10-20T17:00:00.000Z",
+      "created_at": "2026-10-26T07:19:18.481Z",
+      "updated_at": "2026-10-26T07:19:18.481Z"
+    },
+    {
+      "task_id": 2,
+      "employee_id": 1,
+      "warehouse_id": 1,
+      "task_type": "KIEM_DINH",
+      "title": "Kiểm tra chất lượng định kỳ lô Quần Jeans LOT-2026-003",
+      "description": "Đối soát tỷ lệ lỗi đường may và phân loại kệ cách ly",
+      "status": "IN_PROGRESS",
+      "due_date": "2026-10-28T17:00:00.000Z",
+      "created_at": "2026-10-26T07:19:18.481Z",
+      "updated_at": "2026-10-26T07:19:18.481Z"
+    },
+    {
+      "task_id": 3,
+      "employee_id": 2,
+      "warehouse_id": 1,
+      "task_type": "NHAP_KHO",
+      "title": "Tiếp nhận và xếp kệ lô Áo Polo LOT-2026-001",
+      "description": "Kiểm đếm số lượng và cập nhật vị trí LOC-A1-L1",
+      "status": "COMPLETED",
+      "due_date": "2026-10-20T17:00:00.000Z",
+      "created_at": "2026-10-26T07:19:18.485Z",
+      "updated_at": "2026-10-26T07:19:18.485Z"
+    },
+    {
+      "task_id": 4,
+      "employee_id": 2,
+      "warehouse_id": 1,
+      "task_type": "KIEM_DINH",
+      "title": "Kiểm tra chất lượng định kỳ lô Quần Jeans LOT-2026-003",
+      "description": "Đối soát tỷ lệ lỗi đường may và phân loại kệ cách ly",
+      "status": "IN_PROGRESS",
+      "due_date": "2026-10-28T17:00:00.000Z",
+      "created_at": "2026-10-26T07:19:18.485Z",
+      "updated_at": "2026-10-26T07:19:18.485Z"
+    },
+    {
+      "task_id": 5,
+      "employee_id": 4,
+      "warehouse_id": 1,
+      "task_type": "NHAP_KHO",
+      "title": "Tiếp nhận và xếp kệ lô Áo Polo LOT-2026-001",
+      "description": "Kiểm đếm số lượng và cập nhật vị trí LOC-A1-L1",
+      "status": "COMPLETED",
+      "due_date": "2026-10-20T17:00:00.000Z",
+      "created_at": "2026-10-26T07:19:18.488Z",
+      "updated_at": "2026-10-26T07:19:18.488Z"
+    },
+    {
+      "task_id": 6,
+      "employee_id": 4,
+      "warehouse_id": 1,
+      "task_type": "KIEM_DINH",
+      "title": "Kiểm tra chất lượng định kỳ lô Quần Jeans LOT-2026-003",
+      "description": "Đối soát tỷ lệ lỗi đường may và phân loại kệ cách ly",
+      "status": "IN_PROGRESS",
+      "due_date": "2026-10-28T17:00:00.000Z",
+      "created_at": "2026-10-26T07:19:18.488Z",
+      "updated_at": "2026-10-26T07:19:18.488Z"
+    }
+  ],
+  "backup_logs": [
+    {
+      "backup_id": 1,
+      "status": "FAILED",
+      "file_path": null,
+      "file_size": null,
+      "performed_by": 1,
+      "note": "Insufficient disk space on target destination",
+      "created_at": "2026-10-26T07:30:46.158Z"
+    },
+    {
+      "backup_id": 2,
+      "status": "FAILED",
+      "file_path": null,
+      "file_size": null,
+      "performed_by": 1,
+      "note": "Insufficient disk space on target destination",
+      "created_at": "2026-10-26T07:33:00.580Z"
+    },
+    {
+      "backup_id": 3,
+      "status": "FAILED",
+      "file_path": null,
+      "file_size": null,
+      "performed_by": 1,
+      "note": "Insufficient disk space on target destination",
+      "created_at": "2026-10-26T07:33:37.141Z"
+    },
+    {
+      "backup_id": 4,
+      "status": "FAILED",
+      "file_path": null,
+      "file_size": null,
+      "performed_by": 1,
+      "note": "Insufficient disk space on target destination",
+      "created_at": "2026-10-26T07:34:14.115Z"
+    },
+    {
+      "backup_id": 5,
+      "status": "FAILED",
+      "file_path": null,
+      "file_size": null,
+      "performed_by": 1,
+      "note": "Insufficient disk space on target destination",
+      "created_at": "2026-10-26T08:48:24.686Z"
+    },
+    {
+      "backup_id": 6,
+      "status": "FAILED",
+      "file_path": null,
+      "file_size": null,
+      "performed_by": 1,
+      "note": "Insufficient disk space on target destination",
+      "created_at": "2026-10-26T09:10:36.615Z"
+    },
+    {
+      "backup_id": 7,
+      "status": "FAILED",
+      "file_path": null,
+      "file_size": null,
+      "performed_by": 1,
+      "note": "Insufficient disk space on target destination",
+      "created_at": "2026-10-26T09:26:59.385Z"
+    },
+    {
+      "backup_id": 8,
+      "status": "FAILED",
+      "file_path": null,
+      "file_size": null,
+      "performed_by": 1,
+      "note": "Insufficient disk space on target destination",
+      "created_at": "2026-10-26T09:41:51.307Z"
+    },
+    {
+      "backup_id": 9,
+      "status": "FAILED",
+      "file_path": null,
+      "file_size": null,
+      "performed_by": 1,
+      "note": "Insufficient disk space on target destination",
+      "created_at": "2026-10-26T09:53:55.596Z"
+    }
+  ],
+  "system_error_logs": [
+    {
+      "error_id": 1,
+      "error_code": "ERR_STOCK_EXCEEDED",
+      "module_name": "ReceiptsModule",
+      "path": "/receipts",
+      "method": "POST",
+      "message": "Không đủ tồn khả dụng hoặc hàng không được phép xuất",
+      "detail": "Yêu cầu xuất 500 chiếc SKU POLO-CM-NAVY-M vượt quá lượng tồn khả dụng tại lô LOT-2026-001 (120 chiếc)",
+      "severity": "WARNING",
+      "request_id": "req-seed-001",
+      "created_at": "2026-10-26T07:19:18.492Z"
+    },
+    {
+      "error_id": 2,
+      "error_code": "ERR_AUTH_LOCKED",
+      "module_name": "AuthModule",
+      "path": "/auth/login",
+      "method": "POST",
+      "message": "Từ chối đăng nhập",
+      "detail": "Tài khoản khoa_taikhoan đang ở trạng thái LOCKED cố gắng đăng nhập",
+      "severity": "WARN",
+      "request_id": "req-seed-002",
+      "created_at": "2026-10-26T07:19:18.492Z"
+    },
+    {
+      "error_id": 3,
+      "error_code": "ERR_SMTP_TIMEOUT",
+      "module_name": "ContractsModule",
+      "path": "/contracts/check-expiry",
+      "method": "POST",
+      "message": "Kết nối máy chủ gửi email cảnh báo thời hạn hợp đồng chậm",
+      "detail": "Timeout 5000ms khi gửi thông báo gia hạn hợp đồng thuê kho Thủ Đức",
+      "severity": "ERROR",
+      "request_id": "req-seed-003",
+      "created_at": "2026-10-26T07:19:18.492Z"
+    }
+  ],
+  "storage_specifications": [],
+  "variant_storage_specifications": []
+}

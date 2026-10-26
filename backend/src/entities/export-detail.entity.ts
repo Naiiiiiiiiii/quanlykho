@@ -23,8 +23,30 @@ export class ExportDetail {
   @Column({ name: 'lot_id', type: 'int', nullable: true })
   lotId?: number;
 
+  @Column({ name: 'location_id', type: 'int', nullable: true })
+  locationId?: number;
+
   @Column({ name: 'quantity', type: 'int' })
   quantity: number;
+
+  @Column({
+    name: 'unit_price',
+    type: 'decimal',
+    precision: 15,
+    scale: 2,
+    nullable: true,
+  })
+  unitPrice?: number;
+
+  @Column({
+    name: 'discount',
+    type: 'decimal',
+    precision: 15,
+    scale: 2,
+    default: 0,
+    nullable: true,
+  })
+  discount?: number;
 
   // Quan hệ N-1 với ExportReceipt
   @ManyToOne(() => ExportReceipt, (receipt) => receipt.exportDetails, {

@@ -1,26 +1,82 @@
+/* Hallmark · shape: app screen · genre: atmospheric · theme: Terminal (by request) · redesign: full
+ * paper: oklch(12.5% 0.012 150) · accent: oklch(87% 0.2 142) · display: "Martian Mono", var(--font-geist-mono) · body: "Martian Mono", var(--font-geist-mono)
+ * nav: deep phosphor green terminal shell · signature: realtime warehouse telemetry and terminal operations on phosphor ground · states: default, hover, focus, active, disabled
+ * axes: dark/monospace/cold-phosphor · posture: committed · contrast: pass · v2.0.0 */
+/* Hallmark · pre-emit critique: P5 H5 E5 S5 R5 V5 · weakest: S, square phosphor surfaces, razor wire rules, crisp tabular metrics */
+@import "./tokens.css";
+@import "./base.css";
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: var(--color-paper);
+  --color-foreground: var(--color-ink);
+  --font-sans: var(--font-body);
+  --font-mono: var(--font-mono);
+  --color-paper: var(--color-paper);
+  --color-paper-2: var(--color-paper-2);
+  --color-paper-3: var(--color-paper-3);
+  --color-sheet: var(--color-sheet);
+  --color-ink: var(--color-ink);
+  --color-ink-2: var(--color-ink-2);
+  --color-muted: var(--color-muted);
+  --color-rule: var(--color-rule);
+  --color-rule-2: var(--color-rule-2);
+  --color-rule-strong: var(--color-rule-strong);
+  --color-accent: var(--color-accent);
+  --color-accent-ink: var(--color-accent-ink);
+  --color-accent-soft: var(--color-accent-soft);
+  --color-accent-wash: var(--color-accent-wash);
+  --color-sidebar-bg: var(--color-sidebar-bg);
+  --color-sidebar-surface: var(--color-sidebar-surface);
+  --color-sidebar-border: var(--color-sidebar-border);
+  --color-sidebar-hover: var(--color-sidebar-hover);
+  --color-sidebar-text: var(--color-sidebar-text);
+  --color-sidebar-muted: var(--color-sidebar-muted);
+  --color-chat-bubble: var(--color-chat-bubble);
+  --color-chat-bubble-border: var(--color-chat-bubble-border);
+  --color-chat-bubble-ink: var(--color-chat-bubble-ink);
+  --color-chat-bubble-meta: var(--color-chat-bubble-meta);
+  --color-chat-bubble-other: var(--color-chat-bubble-other);
+  --color-chat-bubble-other-border: var(--color-chat-bubble-other-border);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html, body {
+  overflow-x: clip;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-paper);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-rule-2);
+  border-radius: 0px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-muted);
+}
+
+:active {
+  transform: translate(0, 0);
+}
+
+button:active:not(:disabled) {
+  transform: translateY(1px);
 }
