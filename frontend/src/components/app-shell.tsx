@@ -145,7 +145,7 @@ export function LoginScreen({
             <div className="text-xs text-[var(--color-accent-2)] font-medium">
               Bàn điều hành WMS
             </div>
-            <h1 className="text-base font-bold text-white font-display">
+            <h1 className="text-base font-bold text-[var(--color-sidebar-text)] font-display">
               Hệ thống quản lý kho quần áo
             </h1>
           </div>
@@ -312,7 +312,7 @@ export function AppShell({
               <Icon name="warehouse" className="w-4 h-4" />
             </div>
             <div className="min-w-0">
-              <div className="text-xs font-bold text-white font-display leading-tight">
+              <div className="text-xs font-bold text-[var(--color-sidebar-text)] font-display leading-tight">
                 WMS Kho quần áo
               </div>
               <div className="text-[11px] text-[var(--color-accent)] leading-tight">
@@ -323,7 +323,7 @@ export function AppShell({
           <button
             type="button"
             onClick={() => setMobileNavOpen(false)}
-            className="lg:hidden p-1 text-[var(--color-sidebar-muted)] hover:text-white rounded-none cursor-pointer"
+            className="lg:hidden p-1 text-[var(--color-sidebar-muted)] hover:text-[var(--color-sidebar-text)] rounded-none cursor-pointer"
             aria-label="Đóng menu"
           >
             <Icon name="close" className="w-4 h-4" />
@@ -351,7 +351,7 @@ export function AppShell({
                         className={`w-full flex items-center justify-between gap-2 px-2.5 py-2 rounded-none text-xs font-medium transition-colors cursor-pointer text-left ${
                           isActive
                             ? 'bg-[var(--color-accent)] text-[var(--color-accent-ink)] font-bold shadow-none'
-                            : 'text-[var(--color-sidebar-text)] hover:bg-[var(--color-sidebar-hover)] hover:text-white'
+                            : 'text-[var(--color-sidebar-text)] hover:bg-[var(--color-sidebar-hover)] hover:text-[var(--color-sidebar-text)]'
                         }`}
                       >
                         <span className="flex items-center gap-2.5 min-w-0 flex-1">
@@ -376,7 +376,7 @@ export function AppShell({
         <div className="p-3 border-t border-[var(--color-sidebar-border)] bg-[var(--color-sidebar-surface)]">
           <div className="flex items-center justify-between gap-2">
             <div className="min-w-0">
-              <div className="text-xs font-semibold text-white font-display leading-tight">
+              <div className="text-xs font-semibold text-[var(--color-sidebar-text)] font-display leading-tight">
                 {currentUser.fullName || currentUser.username}
               </div>
               <div className="text-[11px] text-[var(--color-sidebar-muted)] leading-tight">

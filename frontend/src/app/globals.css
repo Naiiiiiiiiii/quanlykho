@@ -1,8 +1,4 @@
-/* Hallmark · shape: app screen · genre: atmospheric · theme: Terminal (by request) · redesign: full
- * paper: oklch(12.5% 0.012 150) · accent: oklch(87% 0.2 142) · display: "Martian Mono", var(--font-geist-mono) · body: "Martian Mono", var(--font-geist-mono)
- * nav: deep phosphor green terminal shell · signature: realtime warehouse telemetry and terminal operations on phosphor ground · states: default, hover, focus, active, disabled
- * axes: dark/monospace/cold-phosphor · posture: committed · contrast: pass · v2.0.0 */
-/* Hallmark · pre-emit critique: P5 H5 E5 S5 R5 V5 · weakest: S, square phosphor surfaces, razor wire rules, crisp tabular metrics */
+/* Hallmark · white warehouse workspace · green accent · clear text and restrained borders */
 @import "./tokens.css";
 @import "./base.css";
 @import "tailwindcss";
