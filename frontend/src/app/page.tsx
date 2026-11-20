@@ -13,7 +13,18 @@ import {
   EmptyState,
   ConfirmDialog,
   inputBaseClasses,
+  inputErrorClasses,
 } from '../components/ui';
+import {
+  validateLogin,
+  validateReceipt,
+  validateIncident,
+  validateConfirmRepair,
+  validateContract,
+  validateRenewContract,
+  validateUser,
+  validateChatMessage,
+} from '../utils/validation';
 import {
   AppShell,
   LoginScreen,
@@ -49,7 +60,17 @@ export default function WarehouseManagementApp() {
   const [activeTab, setActiveTab] = useState<TabKey>('OVERVIEW');
 
   // Hộp thoại xác nhận thao tác quan trọng (thay thế window.confirm)
-  const [confirmModal, setConfirmModal] = useState<{
+  // Validation errors
+  const [loginErrors, setLoginErrors] = useState<{ username?: string; password?: string }>({});
+  const [receiptErrors, setReceiptErrors] = useState<Record<string, string | undefined>>({});
+  const [incidentErrors, setIncidentErrors] = useState<Record<string, string | undefined>>({});
+  const [confirmRepairErrors, setConfirmRepairErrors] = useState<Record<string, string | undefined>>({});
+  const [contractErrors, setContractErrors] = useState<Record<string, string | undefined>>({});
+  const [renewContractError, setRenewContractError] = useState<string>('');
+  const [userErrors, setUserErrors] = useState<Record<string, string | undefined>>({});
+  const [chatError, setChatError] = useState<string>('');
+
+const [confirmModal, setConfirmModal] = useState<{
     open: boolean;
     title: string;
     description: string;
@@ -135,6 +156,15 @@ export default function WarehouseManagementApp() {
   // =========================================================================
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoginErrors({});
+    const val = validateLogin({ username, password });
+    if (!val.isValid) {
+      setLoginErrors(val.errors);
+      setMessageType('error');
+      setMessage('Vui lòng kiểm tra và sửa thông tin đăng nhập chưa hợp lệ.');
+      return;
+    }
+
     setLoading(true);
     setMessage(null);
 
@@ -146,7 +176,7 @@ export default function WarehouseManagementApp() {
           'X-Request-Id': `req-${Date.now()}`,
         },
         body: JSON.stringify({
-          username,
+          username: username.trim(),
           password,
         }),
       });
@@ -510,14 +540,35 @@ export default function WarehouseManagementApp() {
 
   const handleCreateReceipt = async (e: React.FormEvent) => {
     e.preventDefault();
+    setReceiptErrors({});
+
+    let availableStock: number | undefined = undefined;
+    if (newReceipt.receiptType === 'EXPORT' && newReceipt.variantId) {
+      const v = availableVariants.find((it) => it.variantId === Number(newReceipt.variantId));
+      if (v?.lots && newReceipt.lotId) {
+        const l = v.lots.find((lot: any) => lot.lotId === Number(newReceipt.lotId));
+        if (l && typeof l.quantityRemaining === 'number') {
+          availableStock = l.quantityRemaining;
+        }
+      }
+    }
+
+    const val = validateReceipt(newReceipt, availableStock);
+    if (!val.isValid) {
+      setReceiptErrors(val.errors as Record<string, string>);
+      setMessageType('error');
+      setMessage('Vui lòng kiểm tra và sửa các thông tin chưa hợp lệ trên phiếu.');
+      return;
+    }
+
     const payload = {
       receiptType: newReceipt.receiptType,
       warehouseId: Number(newReceipt.warehouseId),
-      supplierName: newReceipt.supplierName || undefined,
-      reason: newReceipt.reason || undefined,
-      receiver: newReceipt.receiver || undefined,
+      supplierName: newReceipt.supplierName?.trim() || undefined,
+      reason: newReceipt.reason?.trim() || undefined,
+      receiver: newReceipt.receiver?.trim() || undefined,
       saveMode: newReceipt.saveMode,
-      note: newReceipt.note || undefined,
+      note: newReceipt.note?.trim() || undefined,
       items: [
         {
           variantId: Number(newReceipt.variantId),
@@ -526,8 +577,8 @@ export default function WarehouseManagementApp() {
             ? Number(newReceipt.locationId)
             : undefined,
           quantity: Number(newReceipt.quantity),
-          unitPrice: Number(newReceipt.unitPrice),
-          discount: Number(newReceipt.discount),
+          unitPrice: Number(newReceipt.unitPrice || 0),
+          discount: Number(newReceipt.discount || 0),
         },
       ],
     };
@@ -537,6 +588,7 @@ export default function WarehouseManagementApp() {
       body: JSON.stringify(payload),
     });
     if (res?.success) {
+      setReceiptErrors({});
       void loadReceipts(true);
     }
   };
@@ -564,17 +616,27 @@ export default function WarehouseManagementApp() {
 
   const handleCreateIncident = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIncidentErrors({});
+    const val = validateIncident(newIncident);
+    if (!val.isValid) {
+      setIncidentErrors(val.errors as Record<string, string>);
+      setMessageType('error');
+      setMessage('Vui lòng nhập đầy đủ và chính xác thông tin sự cố.');
+      return;
+    }
+
     const res = await callApi('/incidents', {
       method: 'POST',
       body: JSON.stringify({
         warehouseId: Number(newIncident.warehouseId),
-        locationDescription: newIncident.locationDescription,
-        facilityName: newIncident.facilityName,
-        description: newIncident.description,
-        imageUrl: newIncident.imageUrl || undefined,
+        locationDescription: newIncident.locationDescription.trim(),
+        facilityName: newIncident.facilityName.trim(),
+        description: newIncident.description.trim(),
+        imageUrl: newIncident.imageUrl?.trim() || undefined,
       }),
     });
     if (res?.success) {
+      setIncidentErrors({});
       setNewIncident((prev) => ({
         ...prev,
         locationDescription: '',
@@ -586,11 +648,24 @@ export default function WarehouseManagementApp() {
   };
 
   const handleConfirmRepair = async (incidentId: number) => {
+    setConfirmRepairErrors({});
+    const val = validateConfirmRepair(confirmRepairForm);
+    if (!val.isValid) {
+      setConfirmRepairErrors(val.errors as Record<string, string>);
+      setMessageType('error');
+      setMessage('Vui lòng chọn kết quả xác nhận sửa chữa sự cố.');
+      return;
+    }
+
     const res = await callApi(`/incidents/${incidentId}/confirm`, {
       method: 'PATCH',
-      body: JSON.stringify(confirmRepairForm),
+      body: JSON.stringify({
+        result: confirmRepairForm.result,
+        note: confirmRepairForm.note?.trim() || undefined,
+      }),
     });
     if (res?.success) {
+      setConfirmRepairErrors({});
       setSelectedIncident(res.data);
       void loadFacilitiesAndIncidents();
     }
@@ -612,6 +687,15 @@ export default function WarehouseManagementApp() {
 
   const handleCreateContract = async (e: React.FormEvent) => {
     e.preventDefault();
+    setContractErrors({});
+    const val = validateContract(newContract);
+    if (!val.isValid) {
+      setContractErrors(val.errors as Record<string, string>);
+      setMessageType('error');
+      setMessage('Vui lòng kiểm tra và sửa các thông tin chưa hợp lệ của hợp đồng.');
+      return;
+    }
+
     const endpoint = editingContractId
       ? `/contracts/${editingContractId}`
       : '/contracts';
@@ -620,14 +704,15 @@ export default function WarehouseManagementApp() {
       method,
       body: JSON.stringify({
         warehouseId: Number(newContract.warehouseId),
-        lessorName: newContract.lessorName,
+        lessorName: newContract.lessorName.trim(),
         startDate: newContract.startDate,
         endDate: newContract.endDate,
         rentalPrice: Number(newContract.rentalPrice),
-        note: newContract.note,
+        note: newContract.note?.trim() || undefined,
       }),
     });
     if (res?.success) {
+      setContractErrors({});
       setEditingContractId(null);
       setNewContract({
         warehouseId: 1,
@@ -645,11 +730,21 @@ export default function WarehouseManagementApp() {
   };
 
   const handleRenewContract = async (id: number) => {
+    setRenewContractError('');
+    const val = validateRenewContract(renewEndDate, selectedContract?.endDate);
+    if (!val.isValid) {
+      setRenewContractError(val.errors.newEndDate || 'Ngày kết thúc mới không hợp lệ');
+      setMessageType('error');
+      setMessage(val.errors.newEndDate || 'Ngày kết thúc mới không hợp lệ');
+      return;
+    }
+
     const res = await callApi(`/contracts/${id}/renew`, {
       method: 'PATCH',
       body: JSON.stringify({ newEndDate: renewEndDate }),
     });
     if (res?.success) {
+      setRenewContractError('');
       void loadContracts();
       void loadContractDetail(id);
     }
@@ -749,11 +844,21 @@ export default function WarehouseManagementApp() {
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedConvId) return;
+    setChatError('');
+    const val = validateChatMessage(messageText);
+    if (!val.isValid) {
+      setChatError(val.errors.content || 'Nội dung tin nhắn không được để trống');
+      setMessageType('error');
+      setMessage(val.errors.content || 'Nội dung tin nhắn không được để trống');
+      return;
+    }
+
     const res = await callApi(`/conversations/${selectedConvId}/messages`, {
       method: 'POST',
-      body: JSON.stringify({ content: messageText }),
+      body: JSON.stringify({ content: messageText.trim() }),
     });
     if (res?.success) {
+      setChatError('');
       setMessageText('');
       void loadMessages(selectedConvId);
     }
@@ -786,18 +891,27 @@ export default function WarehouseManagementApp() {
 
   const handleCreateUser = async (e: React.FormEvent) => {
     e.preventDefault();
+    setUserErrors({});
+    const val = validateUser(newUserForm, Boolean(editingUserId));
+    if (!val.isValid) {
+      setUserErrors(val.errors as Record<string, string>);
+      setMessageType('error');
+      setMessage('Vui lòng kiểm tra và sửa thông tin tài khoản nhân sự.');
+      return;
+    }
+
     const endpoint = editingUserId ? `/users/${editingUserId}` : '/users';
     const method = editingUserId ? 'PUT' : 'POST';
     const payload: Record<string, any> = {
-      username: newUserForm.username,
-      fullName: newUserForm.fullName,
-      email: newUserForm.email || undefined,
-      phone: newUserForm.phone || undefined,
-      position: newUserForm.position,
+      username: newUserForm.username.trim(),
+      fullName: newUserForm.fullName.trim(),
+      email: newUserForm.email?.trim() || undefined,
+      phone: newUserForm.phone?.trim() || undefined,
+      position: newUserForm.position.trim(),
       roleName: newUserForm.roleName,
       status: newUserForm.status,
     };
-    if (!editingUserId || newUserForm.password) {
+    if (!editingUserId || (newUserForm.password && newUserForm.password.trim())) {
       payload.password = newUserForm.password;
     }
 
@@ -806,6 +920,7 @@ export default function WarehouseManagementApp() {
       body: JSON.stringify(payload),
     });
     if (res?.success) {
+      setUserErrors({});
       setEditingUserId(null);
       setNewUserForm({
         username: '',
@@ -886,11 +1001,19 @@ export default function WarehouseManagementApp() {
       <LoginScreen
         username={username}
         password={password}
+        usernameError={loginErrors.username}
+        passwordError={loginErrors.password}
         loading={loading}
         message={message}
         messageType={messageType}
-        onUsernameChange={setUsername}
-        onPasswordChange={setPassword}
+        onUsernameChange={(val) => {
+          setUsername(val);
+          if (loginErrors.username) setLoginErrors((prev) => ({ ...prev, username: undefined }));
+        }}
+        onPasswordChange={(val) => {
+          setPassword(val);
+          if (loginErrors.password) setLoginErrors((prev) => ({ ...prev, password: undefined }));
+        }}
         onSubmit={handleLogin}
       />
     );
@@ -1676,7 +1799,7 @@ export default function WarehouseManagementApp() {
               </div>
 
               {newReceipt.receiptType === 'IMPORT' ? (
-                <FormField label="Nhà cung cấp">
+                <FormField label="Nhà cung cấp" error={receiptErrors.supplierName}>
                   <input
                     type="text"
                     value={newReceipt.supplierName}
@@ -1692,7 +1815,7 @@ export default function WarehouseManagementApp() {
                 </FormField>
               ) : (
                 <div className="grid grid-cols-2 gap-3">
-                  <FormField label="Đơn vị nhận hàng">
+                  <FormField label="Đơn vị nhận hàng" error={receiptErrors.receiver}>
                     <input
                       type="text"
                       value={newReceipt.receiver}
@@ -1727,7 +1850,7 @@ export default function WarehouseManagementApp() {
                   Định vị kho & Chi tiết mặt hàng
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <FormField label="Kho thực hiện" required>
+                  <FormField label="Kho thực hiện" required error={receiptErrors.warehouseId}>
                     <select
                       value={newReceipt.warehouseId}
                       onChange={(e) =>
@@ -1751,7 +1874,7 @@ export default function WarehouseManagementApp() {
                       )}
                     </select>
                   </FormField>
-                  <FormField label="Sản phẩm & Biến thể" required>
+                  <FormField label="Sản phẩm & Biến thể" required error={receiptErrors.variantId}>
                     <select
                       value={newReceipt.variantId}
                       onChange={(e) => {
@@ -1822,7 +1945,7 @@ export default function WarehouseManagementApp() {
                       ))}
                     </select>
                   </FormField>
-                  <FormField label="Số lượng" required>
+                  <FormField label="Số lượng" required error={receiptErrors.quantity}>
                     <input
                       type="number"
                       min={1}
@@ -1840,7 +1963,7 @@ export default function WarehouseManagementApp() {
 
                 {newReceipt.receiptType === 'EXPORT' && (
                   <div className="grid grid-cols-2 gap-3 mt-3">
-                    <FormField label="Đơn giá bán (VNĐ)">
+                    <FormField label="Đơn giá bán (VNĐ)" error={receiptErrors.unitPrice}>
                       <input
                         type="number"
                         min={0}
@@ -1854,7 +1977,7 @@ export default function WarehouseManagementApp() {
                         className={inputBaseClasses}
                       />
                     </FormField>
-                    <FormField label="Chiết khấu / Giảm giá (VNĐ)">
+                    <FormField label="Chiết khấu / Giảm giá (VNĐ)" error={receiptErrors.discount}>
                       <input
                         type="number"
                         min={0}
@@ -1876,10 +1999,11 @@ export default function WarehouseManagementApp() {
                 type="submit"
                 variant="primary"
                 size="md"
+                disabled={loading}
                 className="w-full"
               >
                 <Icon name="plus" className="w-4 h-4" />
-                <span>Lưu phiếu giao dịch</span>
+                <span>{loading ? 'Đang ghi nhận phiếu...' : 'Lưu phiếu giao dịch'}</span>
               </Button>
             </form>
           </SectionPanel>
@@ -2476,7 +2600,7 @@ export default function WarehouseManagementApp() {
               title="Ghi nhận sự cố cơ sở vật chất"
             >
               <form onSubmit={handleCreateIncident} className="space-y-3.5">
-                <FormField label="Kho / Vị trí xảy ra sự cố" required>
+                <FormField label="Kho / Vị trí xảy ra sự cố" required error={incidentErrors.locationDescription}>
                   <input
                     type="text"
                     required
@@ -2492,7 +2616,7 @@ export default function WarehouseManagementApp() {
                   />
                 </FormField>
 
-                <FormField label="Tên thiết bị / Cơ sở vật chất">
+                <FormField label="Tên thiết bị / Cơ sở vật chất" error={incidentErrors.facilityName}>
                   <input
                     type="text"
                     value={newIncident.facilityName}
@@ -2507,7 +2631,7 @@ export default function WarehouseManagementApp() {
                   />
                 </FormField>
 
-                <FormField label="Mô tả chi tiết sự cố" required>
+                <FormField label="Mô tả chi tiết sự cố" required error={incidentErrors.description}>
                   <textarea
                     rows={3}
                     required
@@ -2527,9 +2651,10 @@ export default function WarehouseManagementApp() {
                   type="submit"
                   variant="primary"
                   size="md"
+                  disabled={loading}
                   className="w-full"
                 >
-                  Lưu báo cáo sự cố
+                  {loading ? 'Đang lưu báo cáo...' : 'Lưu báo cáo sự cố'}
                 </Button>
               </form>
             </SectionPanel>
@@ -2715,7 +2840,7 @@ export default function WarehouseManagementApp() {
               }
             >
               <form onSubmit={handleCreateContract} className="space-y-3.5">
-                <FormField label="Kho thuê" required>
+                <FormField label="Kho thuê" required error={contractErrors.warehouseId}>
                   <select
                     value={newContract.warehouseId}
                     onChange={(e) =>
@@ -2734,7 +2859,7 @@ export default function WarehouseManagementApp() {
                   </select>
                 </FormField>
 
-                <FormField label="Đơn vị cho thuê" required>
+                <FormField label="Đơn vị cho thuê" required error={contractErrors.lessorName}>
                   <input
                     type="text"
                     required
@@ -2751,7 +2876,7 @@ export default function WarehouseManagementApp() {
                 </FormField>
 
                 <div className="grid grid-cols-2 gap-3">
-                  <FormField label="Ngày bắt đầu">
+                  <FormField label="Ngày bắt đầu" error={contractErrors.startDate}>
                     <input
                       type="date"
                       value={newContract.startDate}
@@ -2764,7 +2889,7 @@ export default function WarehouseManagementApp() {
                       className={inputBaseClasses}
                     />
                   </FormField>
-                  <FormField label="Ngày kết thúc">
+                  <FormField label="Ngày kết thúc" error={contractErrors.endDate}>
                     <input
                       type="date"
                       value={newContract.endDate}
@@ -3082,20 +3207,31 @@ export default function WarehouseManagementApp() {
                 )}
               </div>
 
-              <form onSubmit={handleSendMessage} className="flex gap-2">
-                <input
-                  type="text"
-                  value={messageText}
-                  onChange={(e) => setMessageText(e.target.value)}
-                  placeholder="Nhập nội dung tin nhắn điều phối..."
-                  aria-label="Nội dung tin nhắn"
-                  className={`flex-1 ${inputBaseClasses}`}
-                />
-                <Button type="submit" variant="primary" size="sm">
-                  <Icon name="send" className="w-3.5 h-3.5" />
-                  <span>Gửi tin nhắn</span>
-                </Button>
-              </form>
+              <div className="flex flex-col gap-1.5">
+                <form onSubmit={handleSendMessage} className="flex gap-2">
+                  <input
+                    type="text"
+                    value={messageText}
+                    onChange={(e) => {
+                      setMessageText(e.target.value);
+                      setChatError('');
+                    }}
+                    placeholder="Nhập nội dung tin nhắn điều phối..."
+                    aria-label="Nội dung tin nhắn"
+                    className={`flex-1 ${inputBaseClasses} ${chatError ? 'border-[var(--color-error)]! ring-1 ring-[var(--color-error)]!' : ''}`}
+                  />
+                  <Button type="submit" variant="primary" size="sm" disabled={loading}>
+                    <Icon name="send" className="w-3.5 h-3.5" />
+                    <span>Gửi tin nhắn</span>
+                  </Button>
+                </form>
+                {chatError && (
+                  <p className="text-[11px] text-[var(--color-error)] font-medium flex items-center gap-1">
+                    <Icon name="error" className="w-3 h-3 shrink-0" />
+                    <span>{chatError}</span>
+                  </p>
+                )}
+              </div>
             </div>
           </SectionPanel>
         </div>
@@ -3288,7 +3424,7 @@ export default function WarehouseManagementApp() {
           >
             <form onSubmit={handleCreateUser} className="space-y-3.5">
               <div className="grid grid-cols-2 gap-3">
-                <FormField label="Tên đăng nhập" required>
+                <FormField label="Tên đăng nhập" required error={userErrors.username}>
                   <input
                     type="text"
                     required
@@ -3303,7 +3439,7 @@ export default function WarehouseManagementApp() {
                     className={inputBaseClasses}
                   />
                 </FormField>
-                <FormField label="Họ và tên nhân viên" required>
+                <FormField label="Họ và tên nhân viên" required error={userErrors.fullName}>
                   <input
                     type="text"
                     required
@@ -3320,31 +3456,48 @@ export default function WarehouseManagementApp() {
                 </FormField>
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
-                <FormField label="Chức vụ">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <FormField label="Chức vụ" error={userErrors.position}>
                   <input
                     type="text"
                     value={newUserForm.position}
-                    onChange={(e) =>
+                    onChange={(e) => {
                       setNewUserForm({
                         ...newUserForm,
                         position: e.target.value,
-                      })
-                    }
+                      });
+                      if (userErrors.position) setUserErrors((prev) => ({ ...prev, position: undefined }));
+                    }}
                     className={inputBaseClasses}
                   />
                 </FormField>
-                <FormField label="Email liên hệ">
+                <FormField label="Email liên hệ" error={userErrors.email}>
                   <input
                     type="email"
                     value={newUserForm.email}
-                    onChange={(e) =>
+                    onChange={(e) => {
                       setNewUserForm({
                         ...newUserForm,
                         email: e.target.value,
-                      })
-                    }
+                      });
+                      if (userErrors.email) setUserErrors((prev) => ({ ...prev, email: undefined }));
+                    }}
                     placeholder="email@warehouse.vn"
+                    className={inputBaseClasses}
+                  />
+                </FormField>
+                <FormField label="Số điện thoại" error={userErrors.phone}>
+                  <input
+                    type="tel"
+                    value={newUserForm.phone}
+                    onChange={(e) => {
+                      setNewUserForm({
+                        ...newUserForm,
+                        phone: e.target.value,
+                      });
+                      if (userErrors.phone) setUserErrors((prev) => ({ ...prev, phone: undefined }));
+                    }}
+                    placeholder="0912345678"
                     className={inputBaseClasses}
                   />
                 </FormField>
@@ -3354,6 +3507,7 @@ export default function WarehouseManagementApp() {
                 <FormField
                   label={editingUserId ? 'Mật khẩu (tùy chọn)' : 'Mật khẩu'}
                   required={!editingUserId}
+                  error={userErrors.password}
                 >
                   <input
                     type="password"
@@ -3405,9 +3559,10 @@ export default function WarehouseManagementApp() {
                 type="submit"
                 variant="primary"
                 size="md"
+                disabled={loading}
                 className="w-full"
               >
-                {editingUserId ? 'Lưu cập nhật tài khoản' : 'Tạo tài khoản'}
+                {loading ? 'Đang xử lý tài khoản...' : editingUserId ? 'Lưu cập nhật tài khoản' : 'Tạo tài khoản'}
               </Button>
             </form>
           </SectionPanel>

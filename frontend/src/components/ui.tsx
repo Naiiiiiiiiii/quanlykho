@@ -521,12 +521,14 @@ export function FormField({
   label,
   required,
   hint,
+  error,
   children,
   className = '',
 }: {
   label: string;
   required?: boolean;
   hint?: string;
+  error?: string;
   children: React.ReactNode;
   className?: string;
 }) {
@@ -537,10 +539,20 @@ export function FormField({
         {required && <span className="text-[var(--color-error)] ml-0.5">*</span>}
       </label>
       {children}
-      {hint && <p className="text-[11px] text-[var(--color-muted)] mt-1">{hint}</p>}
+      {error ? (
+        <p className="text-[11px] text-[var(--color-error)] font-medium mt-1 flex items-center gap-1">
+          <Icon name="error" className="w-3.5 h-3.5 shrink-0" />
+          <span>{error}</span>
+        </p>
+      ) : hint ? (
+        <p className="text-[11px] text-[var(--color-muted)] mt-1">{hint}</p>
+      ) : null}
     </div>
   );
 }
+
+export const inputErrorClasses =
+  'border-[var(--color-error)]! focus:border-[var(--color-error)]! ring-1 ring-[var(--color-error)]!';
 
 export const inputBaseClasses =
   'w-full px-3 py-1.5 text-xs text-[var(--color-ink)] bg-[var(--color-paper)] border border-[var(--color-rule-2)] rounded-none transition-colors placeholder:text-[var(--color-muted)] focus:outline-none focus:border-[var(--color-accent)] focus:ring-1 focus:ring-[var(--color-accent)] disabled:bg-[var(--color-paper-2)] disabled:text-[var(--color-muted)] font-mono';

@@ -117,6 +117,8 @@ export const NAV_ITEMS: NavItemConfig[] = [
 export function LoginScreen({
   username,
   password,
+  usernameError,
+  passwordError,
   loading,
   message,
   messageType,
@@ -126,6 +128,8 @@ export function LoginScreen({
 }: {
   username: string;
   password: string;
+  usernameError?: string;
+  passwordError?: string;
   loading: boolean;
   message: string | null;
   messageType: 'success' | 'error' | 'info';
@@ -198,13 +202,20 @@ export function LoginScreen({
               <input
                 id="login-username"
                 type="text"
-                required
                 autoComplete="username"
                 value={username}
                 onChange={(e) => onUsernameChange(e.target.value)}
                 placeholder="Nhập tên tài khoản…"
-                className={`${inputBaseClasses} py-2`}
+                className={`${inputBaseClasses} py-2 ${
+                  usernameError ? 'border-[var(--color-error)]! ring-1 ring-[var(--color-error)]!' : ''
+                }`}
               />
+              {usernameError && (
+                <p className="text-[11px] text-[var(--color-error)] font-medium mt-1 flex items-center gap-1">
+                  <Icon name="error" className="w-3.5 h-3.5 shrink-0" />
+                  <span>{usernameError}</span>
+                </p>
+              )}
             </div>
 
             <div>
@@ -217,13 +228,20 @@ export function LoginScreen({
               <input
                 id="login-password"
                 type="password"
-                required
                 autoComplete="current-password"
                 value={password}
                 onChange={(e) => onPasswordChange(e.target.value)}
                 placeholder="Nhập mật khẩu…"
-                className={`${inputBaseClasses} py-2`}
+                className={`${inputBaseClasses} py-2 ${
+                  passwordError ? 'border-[var(--color-error)]! ring-1 ring-[var(--color-error)]!' : ''
+                }`}
               />
+              {passwordError && (
+                <p className="text-[11px] text-[var(--color-error)] font-medium mt-1 flex items-center gap-1">
+                  <Icon name="error" className="w-3.5 h-3.5 shrink-0" />
+                  <span>{passwordError}</span>
+                </p>
+              )}
             </div>
 
             <Button

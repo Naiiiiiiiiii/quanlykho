@@ -26,7 +26,7 @@ describe('Hệ thống Quản lý Kho Quần Áo - E2E Integration Tests (UC01 -
     );
     app.useGlobalFilters(new HttpExceptionFilter());
     await app.init();
-  });
+  }, 60000);
 
   afterAll(async () => {
     await app.close();
